@@ -1,12 +1,14 @@
 <?php
 
 /*
-Plugin Name: WooCommerce Netgíró Payment Gateway
+Plugin Name: Netgíró Payment gateway for Woocommerce
 Plugin URI: http://www.netgiro.is
 Description: Netgíró Payment gateway for Woocommerce
-Version: 3.5.7
+Version: 3.6.0
 Author: Netgíró
 Author URI: http://www.netgiro.is
+WC requires at least: 3.0.0
+WC tested up to: 4.9.0
 */
 
 add_action('plugins_loaded', 'woocommerce_netgiro_init', 0);
@@ -34,15 +36,15 @@ function woocommerce_netgiro_init(){
 
       $this->payment_gateway_url = $this->settings['test']=='yes' ? 'https://test.netgiro.is/securepay/' : 'https://securepay.netgiro.is/v1/' ;
 
-      $this -> title = $this -> settings['title'];
+      $this -> title = sanitize_text_field($this -> settings['title']);
       $this -> description = $this -> settings['description'];      
-      $this -> gateway_url = $this -> payment_gateway_url;
-      $this -> application_id = $this -> settings['application_id'];
+      $this -> gateway_url = sanitize_text_field($this -> payment_gateway_url);
+      $this -> application_id = sanitize_text_field($this -> settings['application_id']);
       $this -> secretkey = $this -> settings['secretkey'];
 	  if (isset($this -> settings['redirect_page_id'])) {
-		$this -> redirect_page_id = $this -> settings['redirect_page_id'];  
+		$this -> redirect_page_id = sanitize_text_field($this -> settings['redirect_page_id']);  
 	  }
-      $this -> cancel_page_id = $this-> settings['cancel_page_id'];
+      $this -> cancel_page_id = sanitize_text_field($this-> settings['cancel_page_id']);
 
       $this->round_numbers = 'yes';
       
@@ -128,15 +130,49 @@ function woocommerce_netgiro_init(){
         echo $this -> generate_netgiro_form($order);
     }
 
+	function validateItemArray($item)
+    {
+    	if (empty($item['line_total'])) {
+    		$item['line_total'] = 0;
+	    }
+
+	    if (
+		    empty($item['product_id'])
+		    || empty($item['name'])
+		    || empty($item['qty'])
+	    ) {
+		    return FALSE;
+	    }
+
+	    if (!is_string($item['name'])
+		    || !is_numeric($item['line_total'])
+		    || !is_numeric($item['qty'])
+	    ) {
+		    return FALSE;
+	    }
+
+	    return TRUE;
+    }
+
     /**
      * Generate netgiro button link
      **/
     public function generate_netgiro_form($order_id){
 
       global $woocommerce;
-	  
+
+	  if (empty($order_id)) {
+      	return $this->get_error_message();
+      }
+
+	  $order_id = sanitize_text_field($order_id);
 	  $order = new WC_Order( $order_id );
       $txnid = $order_id.'_'.date("ymds");
+	  
+	  if (!is_numeric($order->get_total())) {
+		 return $this->get_error_message();
+	  }
+
       $round_numbers = $this->round_numbers;
       //$redirect_url = ($this -> redirect_page_id=="" || $this -> redirect_page_id==0)?get_site_url() . "/":get_permalink($this -> redirect_page_id);
       $cancel_url = ($this -> cancel_page_id=="" || $this -> cancel_page_id==0)?get_site_url() . "/":get_permalink($this -> cancel_page_id);
@@ -152,6 +188,12 @@ function woocommerce_netgiro_init(){
       $str = $this->secretkey . $order_id . $total . $this->application_id;
       $Signature = hash('sha256', $str);
 
+	    if( !function_exists('get_plugin_data') ){
+		    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+	    }
+      $plugin_data = get_plugin_data( __FILE__ );
+      $plugin_version = $plugin_data['Version'];
+
       // Netgiro arguments
       $netgiro_args = array(
         'ApplicationID'=>$this->application_id,
@@ -164,14 +206,14 @@ function woocommerce_netgiro_init(){
         'TotalAmount'=>$total,
         'Signature' => $Signature,
         'PrefixUrlParameters' => 'true',
-        'ClientInfo' => 'System: Woocommerce 3.5.7'
+        'ClientInfo' => 'System: Woocommerce ' . $plugin_version
         );
 
-      if($order->get_shipping_total()>0) {
+      if($order->get_shipping_total() > 0 && is_numeric($order->get_shipping_total())) {
         $netgiro_args['ShippingAmount'] = ceil($order->get_shipping_total());
       }
 
-      if($order->get_total_discount()>0) {
+      if($order->get_total_discount() > 0 && is_numeric($order->get_total_discount())) {
         $netgiro_args['DiscountAmount'] = ceil($order->get_total_discount());
       }
 
@@ -182,14 +224,20 @@ function woocommerce_netgiro_init(){
 
       // Woocommerce -> Netgiro Items
       foreach ($order->get_items() as $item) {
+		$validationPass = $this->validateItemArray($item);
+
+		if (!$validationPass) {
+			return $this->get_error_message();
+		}
+
 		$unitPrice = $order->get_item_subtotal($item, true, $round_numbers == 'yes');
 		$amount = $order->get_line_subtotal($item, true, $round_numbers == 'yes');
-		
+
 		if ($round_numbers == 'yes') {
 			$unitPrice = round($unitPrice);
       	    $amount = round($amount);			
         }
-		
+
         $items[] = array(
         'ProductNo'=>$item['product_id'],
         'Name'=> $item['name'],
@@ -204,6 +252,10 @@ function woocommerce_netgiro_init(){
         foreach($items[$i] as $key => $value){
           $netgiro_items_array[] = "<input type='hidden' name='Items[$i].$key' value='$value'/>";
         }          
+      }
+	  
+	  if (!wp_http_validate_url($this -> gateway_url) && !wp_http_validate_url($order->get_cancel_order_url())) {
+		return $this->get_error_message();
       }
 
       return '
@@ -239,6 +291,10 @@ function woocommerce_netgiro_init(){
 
     }
 
+    function get_error_message() {
+    	return 'Villa kom upp við vinnslu beiðni þinnar. Vinsamlega reyndu aftur eða hafðu samband við þjónustuver Netgíró með tölvupósti á netgiro@netgiro.is';
+    }
+
     /**
      * Process the payment and return the result
      **/    
@@ -261,21 +317,24 @@ function woocommerce_netgiro_init(){
 	  //$logger->debug( 'debug netgiro_response', array( 'source' => 'netgiro_response' ) );
 
 	  if((isset($_GET['ng_netgiroSignature']) && $_GET['ng_netgiroSignature'])
-		  && $_GET['ng_orderid'] && $_GET['ng_transactionid'] ) {
-        
-		$order = new WC_Order( $_GET['ng_orderid'] );
-		
-		$str = $this->secretkey . $_GET['ng_orderid'];
-        $hash = hash('sha256', $str);
-        if($hash==$_GET['ng_signature']) {			
-            $order -> payment_complete();			
-            $order -> add_order_note('Netgíró greiðsla tókst<br/>Tilvísunarnúmer frá Netgíró: '.$_REQUEST['ng_invoiceNumber']);            			
+		  && $_GET['ng_orderid'] && $_GET['ng_transactionid'] && $_GET['ng_signature']) {
+
+        $signature = sanitize_text_field($_GET['ng_signature']);
+	    $orderId = sanitize_text_field($_GET['ng_orderid']);
+		$order = new WC_Order( $orderId );
+		$secret_key = sanitize_text_field($this->secretkey);
+		$invoice_number = sanitize_text_field($_REQUEST['ng_invoiceNumber']);
+
+		$str = $secret_key . $orderId;
+		$hash = hash('sha256', $str);
+        if($hash==$signature && is_numeric($invoice_number)) {
+            $order -> payment_complete();
+            $order -> add_order_note('Netgíró greiðsla tókst<br/>Tilvísunarnúmer frá Netgíró: '.$invoice_number);
             $woocommerce->cart->empty_cart();			
             wp_redirect($this->get_return_url( $order ));
             exit;
         } else {
-			
-		  $failed_message = 'Netgiro payment failed. Woocommerce order id: ' . $_GET['ng_orderid'] . ' and Netgiro reference no.: ' . $_REQUEST['ng_invoiceNumber'] . ' does relate to signature: ' . $_GET['ng_signature'];			
+		  $failed_message = 'Netgiro payment failed. Woocommerce order id: ' . $orderId . ' and Netgiro reference no.: ' . $invoice_number . ' does relate to signature: ' . $signature;
 		  
           // Set order status to failed
 		  if (is_bool($order) === false) {			
@@ -283,10 +342,10 @@ function woocommerce_netgiro_init(){
 			$order -> update_status('failed');
 			$order -> add_order_note(failed_message);  
 		  } else { 
-		    $logger->debug( 'error netgiro_response - order not found: ' . $_GET['ng_orderid'], array( 'source' => 'netgiro_response' ) );
+		    $logger->debug( 'error netgiro_response - order not found: ' . $orderId, array( 'source' => 'netgiro_response' ) );
 		  }
 		  		  		 		  
-		  wc_add_notice("Ekki tókst að staðfesta Netgíró greiðslu! Vinsamlega hafðu samband við verslun og athugað stöðuna á pöntun þinni nr. " . $_GET['ng_orderid'], 'error');
+		  wc_add_notice("Ekki tókst að staðfesta Netgíró greiðslu! Vinsamlega hafðu samband við verslun og athugað stöðuna á pöntun þinni nr. " . $orderId, 'error');
 		  wp_redirect($this->get_return_url( $order ));
 		  exit;
         }
