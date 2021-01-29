@@ -54,6 +54,9 @@ Register on our page: <a href="https://partner.netgiro.is/Account/Register">http
 
 == Changelog ==
 
+= 3.6.0 =
+* Read plugin version number dynamically
+
 = 3.5.9 =
 * Add WooCommerce version check feature
 
