@@ -4,7 +4,7 @@
 Plugin Name: Netgíró Payment gateway for Woocommerce
 Plugin URI: http://www.netgiro.is
 Description: Netgíró Payment gateway for Woocommerce
-Version: 3.6.0
+Version: 3.6.1
 Author: Netgíró
 Author URI: http://www.netgiro.is
 WC requires at least: 3.0.0
@@ -333,22 +333,21 @@ function woocommerce_netgiro_init(){
             $woocommerce->cart->empty_cart();			
             wp_redirect($this->get_return_url( $order ));
             exit;
-        } else {
-		  $failed_message = 'Netgiro payment failed. Woocommerce order id: ' . $orderId . ' and Netgiro reference no.: ' . $invoice_number . ' does relate to signature: ' . $signature;
-		  
-          // Set order status to failed
-		  if (is_bool($order) === false) {			
-			$logger->debug( failed_message, array( 'source' => 'netgiro_response' ) );
-			$order -> update_status('failed');
-			$order -> add_order_note(failed_message);  
-		  } else { 
-		    $logger->debug( 'error netgiro_response - order not found: ' . $orderId, array( 'source' => 'netgiro_response' ) );
-		  }
-		  		  		 		  
-		  wc_add_notice("Ekki tókst að staðfesta Netgíró greiðslu! Vinsamlega hafðu samband við verslun og athugað stöðuna á pöntun þinni nr. " . $orderId, 'error');
-		  wp_redirect($this->get_return_url( $order ));
-		  exit;
         }
+		$failed_message = 'Netgiro payment failed. Woocommerce order id: ' . $orderId . ' and Netgiro reference no.: ' . $invoice_number . ' does relate to signature: ' . $signature;
+
+		// Set order status to failed
+		if (is_bool($order) === false) {
+		$logger->debug( $failed_message, array( 'source' => 'netgiro_response' ) );
+		$order -> update_status('failed');
+		$order -> add_order_note($failed_message);
+		} else {
+		$logger->debug( 'error netgiro_response - order not found: ' . $orderId, array( 'source' => 'netgiro_response' ) );
+		}
+
+		wc_add_notice("Ekki tókst að staðfesta Netgíró greiðslu! Vinsamlega hafðu samband við verslun og athugað stöðuna á pöntun þinni nr. " . $orderId, 'error');
+		wp_redirect($this->get_return_url( $order ));
+		exit;
       }
     }
 	

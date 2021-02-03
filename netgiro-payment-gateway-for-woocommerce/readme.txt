@@ -5,7 +5,7 @@ Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocomm
 Donate link: -
 Requires at least: 4.6
 Tested up to: 5.6
-Stable tag: 3.5.9
+Stable tag: 3.6.1
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,9 @@ Register on our page: <a href="https://partner.netgiro.is/Account/Register">http
 2. Actual Netgíró checkout page checkout_page1.png
 
 == Changelog ==
+
+= 3.6.1 =
+* Fix failure message
 
 = 3.6.0 =
 * Read plugin version number dynamically
