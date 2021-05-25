@@ -65,3 +65,10 @@ Register on our page: <a href="https://partner.netgiro.is/Account/Register">http
 
 = 3.5.7 =
 * Our Woocommerce plugins use the iFrame and POST integration
+
+= 3.6.1 =
+* Fixed failure message
+
+= 4.0.0 =
+* Added callback for payment confirmation
+
