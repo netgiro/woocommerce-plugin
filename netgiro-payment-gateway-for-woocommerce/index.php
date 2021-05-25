@@ -209,7 +209,7 @@ function woocommerce_netgiro_init()
         'PaymentSuccessfulURL' => $payment_Successful_url,
         'PaymentCancelledURL'  => $payment_Cancelled_url,
         'PaymentConfirmedURL'  => $payment_Confirmed_url,
-        'ConfirmationType'     => '1',
+        'ConfirmationType'     => '0',
         'ReferenceNumber'      => $order_id,
         'TotalAmount'          => $total,
         'Signature'            => $Signature,
