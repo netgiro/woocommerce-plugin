@@ -38,7 +38,7 @@ function woocommerce_netgiro_init()
       $this->init_form_fields();
       $this->init_settings();
 
-      $this->payment_gateway_url = $this->settings['test'] == 'yes' ? 'https://localhost:5001/' : 'https://securepay.netgiro.is/v1/';
+      $this->payment_gateway_url = $this->settings['test'] == 'yes' ? 'https://test.netgiro.is/securepay/' : 'https://securepay.netgiro.is/v1/';
 
       $this->title = sanitize_text_field($this->settings['title']);
       $this->description = $this->settings['description'];
