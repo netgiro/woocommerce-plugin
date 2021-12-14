@@ -4,7 +4,7 @@ Contributors: netgiro
 Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocommerce
 Donate link: -
 Requires at least: 4.6
-Tested up to: 5.7.2
+Tested up to: 5.9
 Stable tag: 4.0.0
 Requires PHP: 5.2.4
 License: GPLv2 or later
