@@ -1,7 +1,7 @@
 # Woocommerce Payment Gateway plugins for Netgiro
 Our Woocommerce plugins use the iFrame and POST integration way described in [our Github documentation](https://netgiro.github.io/).
 
-Also, special [documentation](https://github.com/netgiro/woocommerce-plugin/blob/master/Netgiro%20-%20Woocommerce%20plugin.pdf) is provided with this plugin. The same documentation applies for all versions.
+Also, special [documentation](https://github.com/netgiro/woocommerce-plugin/blob/master/woocommerce-instructions.pdf) is provided with this plugin. The same documentation applies for all versions.
 
 You can download specific .zip versions in [releases](https://github.com/netgiro/woocommerce-plugin/releases)
 
