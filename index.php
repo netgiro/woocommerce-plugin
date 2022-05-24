@@ -4,7 +4,7 @@
 Plugin Name: Netgíró Payment gateway for Woocommerce
 Plugin URI: http://www.netgiro.is
 Description: Netgíró Payment gateway for Woocommerce
-Version: 4.0.0
+Version: 4.0.1
 Author: Netgíró
 Author URI: http://www.netgiro.is
 WC requires at least: 4.6.0
