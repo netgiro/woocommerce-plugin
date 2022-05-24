@@ -8,7 +8,7 @@ Version: 4.0.0
 Author: Netgíró
 Author URI: http://www.netgiro.is
 WC requires at least: 4.6.0
-WC tested up to: 5.7.2
+WC tested up to: 6.5.1
 */
 
 add_action('plugins_loaded', 'woocommerce_netgiro_init', 0);
@@ -268,7 +268,7 @@ function woocommerce_netgiro_init()
 
       return '
       <style>
-        #netgiro_methods { padding: 0px; margin: 0xp; }
+        #netgiro_methods { padding: 0px; margin: 0px; }
         #netgiro_methods li { margin: 0px; margin-bottom: -1px; background: #f3f3f3; border: solid 1px #ccc; padding: 15px; color: #676968; list-style:none; }
         #netgiro_methods li .logo { float: right; width: 250px; }
         #netgiro_methods li .logo img { border: none; box-shadow: none;}

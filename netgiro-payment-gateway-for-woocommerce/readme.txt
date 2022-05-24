@@ -4,8 +4,8 @@ Contributors: netgiro
 Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocommerce
 Donate link: -
 Requires at least: 4.6
-Tested up to: 5.9
-Stable tag: 4.0.0
+Tested up to: 5.9.3
+Stable tag: 4.0.1
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,9 @@ Register on our page: <a href="https://partner.netgiro.is/Account/Register">http
 2. Actual Netgíró checkout page checkout_page1.png
 
 == Changelog ==
+
+= 4.0.1 =
+* Tested up to Wordpress version 5.9.3 and WooCommerce version 6.5.1
 
 = 4.0.0 =
 * Added callback for payment confirmation
