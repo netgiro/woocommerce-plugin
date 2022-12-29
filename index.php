@@ -4,11 +4,11 @@
 Plugin Name: Netgíró Payment gateway for Woocommerce
 Plugin URI: http://www.netgiro.is
 Description: Netgíró Payment gateway for Woocommerce
-Version: 4.0.1
+Version: 4.0.2
 Author: Netgíró
 Author URI: http://www.netgiro.is
 WC requires at least: 4.6.0
-WC tested up to: 6.5.1
+WC tested up to: 7.2.2
 */
 
 add_action('plugins_loaded', 'woocommerce_netgiro_init', 0);
@@ -78,7 +78,7 @@ function woocommerce_netgiro_init()
           'title'       => __('Lýsing', 'netgiro'),
           'type'        => 'textarea',
           'description' => __('Description of payment method on checkout page.', 'netgiro'),
-          'default'     => __('Reikningur verður sendur í netbanka og greiða þarf innan 14 daga eða með Netgíró raðgreiðslum.', 'netgiro')
+          'default'     => __('Borgaðu með Netgíró.', 'netgiro')
         ),
         'test' => array(
           'title'       => __('Prófunarumhverfi', 'netgiro_valitor'),

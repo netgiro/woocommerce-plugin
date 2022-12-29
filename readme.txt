@@ -4,9 +4,9 @@ Contributors: netgiro
 Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocommerce
 Donate link: -
 Requires at least: 4.6
-Tested up to: 5.9.3
-Stable tag: 4.0.1
-Requires PHP: 5.2.4
+Tested up to: 6.1.1
+Stable tag: 4.0.2
+Requires PHP: 7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ When you use our free WooCommerce plugin as a Netgíró provider **you can accep
 
 <a href="https://www.netgiro.is">Netgíró</a> helps businesses of all sizes increase their sales. We have been offering Icelandic consumers a solution for simple and secure payments since 2012. **The Icelandic market widely supports Netgíró online and offline, with thousands of consumers using it daily.**
 
-With Netgíró being a secure and convenient payment solution, we offer customers to **pay right away, get a 14-day grace period or pay an invoice at the beginning of a new month.** Spreading payments or taking a loan is also an option, whatever suits the customer. 
+With Netgíró being a secure and convenient payment solution, we offer customers to **pay right away or pay an invoice at the beginning of a new month.** Spreading payments or taking a loan is also an option, whatever suits the customer. 
 
 Maximize your revenue by offering your customers the option of using Netgíró as a payment method. Netgíró offers a simple and convenient solution if customers wish to spread payments for larger purchases for up to 24 months (some restrictions may apply based on the total amount). They can use Netgíró as a payment method and spread the payments by themselves in the app or customer pages, even after they pay. 
 
@@ -53,6 +53,9 @@ Register on our page: <a href="https://partner.netgiro.is/Account/Register">http
 2. Actual Netgíró checkout page checkout_page1.png
 
 == Changelog ==
+
+= 4.0.2 =
+* Tested up to Wordpress version 6.2.2 and WooCommerce version 7.2.2
 
 = 4.0.1 =
 * Tested up to Wordpress version 5.9.3 and WooCommerce version 6.5.1
