@@ -35,10 +35,16 @@ function woocommerce_netgiro_init()
       $this->has_fields = false;
       $this->icon = plugins_url('/logo_x25.png', __FILE__);
 
+      $this->supports = array(
+        'products',
+        'refunds'
+    );
+
       $this->init_form_fields();
       $this->init_settings();
 
       $this->payment_gateway_url = $this->settings['test'] == 'yes' ? 'https://test.netgiro.is/securepay/' : 'https://securepay.netgiro.is/v1/';
+      $this->payment_gateway_api_url = $this->settings['test'] == 'yes' ? 'https://test.netgiro.is/api/' : 'https://api.netgiro.is/v1/';
 
       $this->title = sanitize_text_field($this->settings['title']);
       $this->description = $this->settings['description'];
@@ -56,6 +62,8 @@ function woocommerce_netgiro_init()
       add_action('woocommerce_update_options_payment_gateways_' . $this->id, array(&$this, 'process_admin_options'));
       add_action('woocommerce_api_wc_' . $this->id, array($this, 'netgiro_response'));
       add_action('woocommerce_api_wc_' . $this->id . "_callback", array($this, 'netgiro_callback'));
+      add_action('woocommerce_order_status_refunded', array( $this, 'process_refund' ));
+
     }
 
     function init_form_fields()
@@ -401,5 +409,134 @@ function woocommerce_netgiro_init()
       }
       return $page_list;
     }
+ 
+    /**
+     * Process a refund if supported.
+     *
+     * @param  int    $order_id Order ID.
+     * @param  float  $amount Refund amount.
+     * @param  string $reason Refund reason.
+     * @return bool|WP_Error True or false based on success, or a WP_Error object.
+     */
+    function process_refund( $order_id, $amount = null, $reason = '' ){
+      $order = wc_get_order($order_id);
+      $totalOrderAmount = $order->get_total(); 
+      $totalRefunded = $order->get_total_refunded();
+      $newPriceTotal = $totalOrderAmount - $totalRefunded;
+
+
+      $transactionId = $reason; //TODO  Hér vantar FÆRSLUNÚMER eða transactionId 
+      
+      if($newPriceTotal == 0){
+        $respMsg = $this->postRefundCancel($transactionId, $reason);
+      } else {
+        $respMsg = $this->postRefundChange($transactionId, $newPriceTotal, $reason); 
+      }
+
+      if ($respMsg !== ''){
+        throw new Exception(__( $respMsg, 'woocommerce' ));
+      }
+      return true;
+    }
+
+    function postRefundChange($transactionId, $amount, $reason = ""){
+      $url = $this->payment_gateway_api_url . 'payment/change';
+
+      $body = json_encode(
+        [
+          "transactionId" => $transactionId,
+          "message"=> "Order Changed in Magento2 store",
+          //"referenceNumber"=> "38",
+          "totalAmount"=> $amount,
+          //"shippingAmount"=> 0,
+          //"handlingAmount"=> 0,
+          //"discountAmount"=> 0,
+          "items"=> [
+            [
+              //"productNo"=> "",
+              //"name"=> "",
+              //"description"=> "",
+              "amount" => $amount,
+              "quantity"=> 1000, 
+              "unitPrice" => $amount
+            ]
+          ],
+          //"currentTimeUtc"=> "YYYY-mm-ddThh:mm:ss.mmmZ",
+          //"validToTimeUtc"=> "YYYY-mm-ddThh:mm:ss.mmmZ",
+          //"description"=> "",
+          //"ipAddress"=> ""
+        ]);
+      
+        $nonce = (string) microtime(true) * 10000000;
+        $response = wp_remote_post($url, [
+          'method' => 'POST',
+          'timeout' => 30,
+          'headers' => [
+            'Content-Type' => 'application/json',
+            'netgiro_appkey' => $this->settings['application_id'], 
+            'netgiro_nonce' => $nonce,
+            'netgiro_signature' => $this->generateSignature([
+              $this->settings['secretkey'],
+              $nonce,
+              $url,
+              $body
+            ])
+          ],
+          'body' => $body,
+      ]);
+
+      $respBody = json_decode($response['body']);
+
+      if ($respBody->ResultCode == 200) {
+        return "";
+      } else {
+        return $respBody->Message;
+      }
+    }
+    function postRefundCancel($transactionId, $reason = ""){
+      $url = $this->payment_gateway_api_url . 'payment/cancel';
+      $body = json_encode([
+          'transactionId' => $transactionId,
+          'description' => $reason,
+          'cancelationFeeAmount' => 0
+          ]
+      );
+      $nonce = (string) microtime(true) * 10000000; 
+      
+      $response = wp_remote_post($url, [
+          'method' => 'POST',
+          'timeout' => 30,
+          'headers' => [
+            'Content-Type' => 'application/json',
+            'netgiro_appkey' => $this->settings['application_id'], 
+            'netgiro_nonce' => $nonce,
+            'netgiro_signature' => $this->generateSignature([
+              $this->settings['secretkey'],
+              $nonce,
+              $url,
+              $body
+            ])
+          ],
+          'body' => $body,
+      ]);
+
+
+      $respBody = json_decode($body['body']);
+
+      if ($respBody->ResultCode == 200) {
+        return "";
+      } else {
+        return $respBody->Message;
+      }
+    }
+
+    function generateSignature($hashValues = []){
+      $hasString = "";
+      foreach ($hashValues as $hashValue) {
+        $hasString .= $hashValue;
+      }
+      return hash('sha256', $hasString);
+    }
+
   }
 }
