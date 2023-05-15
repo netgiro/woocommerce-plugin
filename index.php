@@ -44,7 +44,7 @@ function woocommerce_netgiro_init()
             $this->init_settings();
 
             $this->payment_gateway_url = $this->settings['test'] == 'yes' ? 'https://test.netgiro.is/securepay/' : 'https://securepay.netgiro.is/v1/';
-            $this->payment_gateway_api_url = $this->settings['test'] == 'yes' ? 'https://test.netgiro.is/api/' : 'https://api.netgiro.is/v1/';
+            $this->payment_gateway_api_url = $this->settings['test'] == 'yes' ? 'https://test.netgiro.is/partnerapi/' : 'https://api.netgiro.is/partner/';
 
             $this->title = sanitize_text_field($this->settings['title']);
             $this->description = $this->settings['description'];
@@ -425,25 +425,17 @@ function woocommerce_netgiro_init()
          */
         function process_refund( $order_id, $amount = null, $reason = '' ){
             $order = wc_get_order($order_id);
-            $totalOrderAmount = $order->get_total();
-            $totalRefunded = $order->get_total_refunded();
-            $newPriceTotal = $totalOrderAmount - $totalRefunded;
-
             $transactionId = $this->gettilvisun($order);// sækja netgiro transactionId
+            //$transactionId = $reason;
+            $response = $this->postRefund($transactionId, $amount, $reason);
 
-            if($newPriceTotal == 0){
-                $respMsg = $this->postRefundCancel($transactionId, $reason);
+            if (!$response['refunded']){
+                $order->add_order_note( 'Refund not successful, reason : ' . $response['message']);
+                throw new Exception(__( $response['message'], 'woocommerce' ));
             } else {
-                $respMsg = $this->postRefundChange($transactionId, $newPriceTotal, $reason);
-            }
-
-            if ($respMsg !== ''){
-                $order->add_order_note( 'Netgiro: '. $respMsg);
-                throw new Exception(__( $respMsg, 'woocommerce' ));
-            }else{
-                $order->add_order_note( 'Netgiro, no response');
-            }
-            return true;
+                $order->add_order_note('Refund successful ' . $response['message']);
+                return true;
+            } 
         }
 
         function postRefundChange($transactionId, $amount, $reason = ""){
@@ -536,6 +528,34 @@ function woocommerce_netgiro_init()
             }
         }
 
+        function postRefund($transactionId, $amount, $reason = ""){
+            $url = $this->payment_gateway_api_url . 'refund';
+            $body = json_encode(
+              [
+                  'transactionId'=> $transactionId,
+                  'refundAmount'=> $amount,
+                //  'description'=> $reason, TODO þetta er lýsing á vöruni, ætti að fá nafn vörunar frá woo
+                  'idempotencyKey'=> $transactionId // 
+              ]);
+              $response = wp_remote_post($url, [
+                'method' => 'POST',
+                'timeout' => 30,
+                'headers' => [
+                  'Content-Type' => 'application/json',
+                  'token' => $this->settings['secretkey']
+                ],
+                'body' => $body,
+            ]);
+            
+            $respBody = json_decode($response['body']);
+
+            if ($response['response']['code'] == 200) {
+                return ['refunded' => true, 'message' => $respBody->Message];
+            } else {
+                return ['refunded' => false, 'message' => $respBody->Message];
+            }
+          }
+      
         function generateSignature($hashValues = []){
             $hasString = "";
             foreach ($hashValues as $hashValue) {
