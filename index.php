@@ -336,7 +336,7 @@ function woocommerce_netgiro_init()
         {
             $this->handleNetgiroCall(false);
         }
-
+        
         function handleNetgiroCall(bool $doRedirect)
         {
             global $woocommerce;
@@ -528,12 +528,12 @@ function woocommerce_netgiro_init()
             }
         }
 
-        function postRefund($transactionId, $amount, $reason = ""){
+        function postRefund($transactionId, $amount, $reason = ""){       
             $url = $this->payment_gateway_api_url . 'refund';
             $body = json_encode(
               [
                   'transactionId'=> $transactionId,
-                  'refundAmount'=> $amount,
+                  'refundAmount'=> (int)$amount,
                 //  'description'=> $reason, TODO þetta er lýsing á vöruni, ætti að fá nafn vörunar frá woo
                   'idempotencyKey'=> $transactionId // 
               ]);
