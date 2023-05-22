@@ -409,7 +409,7 @@ class WC_Netgiro extends WC_Payment_Gateway {
 			$hash = hash( 'sha256', $str );
 
 			// correct signature and order is success.
-			if ( $hash == $ng_netgiro_signature && is_numeric( $invoice_number ) ) {
+			if ( $hash === $ng_netgiro_signature && is_numeric( $invoice_number ) ) {
 				$order->payment_complete();
 				$order->add_order_note( 'Netgíró greiðsla tókst<br/>Tilvísunarnúmer frá Netgíró: ' . $invoice_number );
 				$order->set_transaction_id( sanitize_text_field( $ng_transactionid ) );
@@ -431,7 +431,7 @@ class WC_Netgiro extends WC_Payment_Gateway {
 			}
 
 			if ( true === $do_redirect ) {
-				wp_redirect( $this->get_return_url( $order ) );
+				wp_safe_redirect( $this->get_return_url( $order ) );
 			}
 
 			exit;
@@ -503,7 +503,7 @@ class WC_Netgiro extends WC_Payment_Gateway {
 	 */
 	public function post_refund( $transaction_id, $amount, $reason = '' ) {
 		$url          = $this->payment_gateway_api_url . 'refund';
-		$body         = json_encode(
+		$body         = wp_json_encode(
 			array(
 				'transactionId'      => $transaction_id,
 				'refundAmount'       => (int) $amount,
@@ -526,7 +526,7 @@ class WC_Netgiro extends WC_Payment_Gateway {
 
 		$resp_body = json_decode( $response['body'] );
 
-		if ( 200 == $response['response']['code'] ) {
+		if ( 200 === $response['response']['code'] ) {
 			return array(
 				'refunded' => true,
 				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -584,7 +584,7 @@ class WC_Netgiro extends WC_Payment_Gateway {
 		if ( is_admin() ) {
 			return $available_gateways;
 		}
-		if ( get_woocommerce_currency() != 'ISK' ) {
+		if ( get_woocommerce_currency() !== 'ISK' ) {
 			$gateway_id = 'netgiro';
 			if ( isset( $available_gateways[ $gateway_id ] ) ) {
 				unset( $available_gateways[ $gateway_id ] );
