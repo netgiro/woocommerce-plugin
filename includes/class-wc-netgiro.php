@@ -1,7 +1,32 @@
 <?php
+/**
+ * Plugin Name: Netgíró Payment gateway for Woocommerce
+ * Plugin URI: http://www.netgiro.is
+ * Description: Netgíró Payment gateway for Woocommerce
+ * Version: 4.1.1
+ * Author: Netgíró
+ * Author URI: http://www.netgiro.is
+ * WC requires at least: 4.6.0
+ * WC tested up to: 7.6.1
+ *
+ * @package WooCommerce-netgiro-plugin
+ */
 
-class WC_netgiro extends WC_Payment_Gateway {
+/**
+ * WC_netgiro Payment Gateway
+ *
+ * Provides a Netgíró Payment Gateway for WooCommerce.
+ *
+ * @class       WC_netgiro
+ * @extends     WC_Payment_Gateway
+ * @version     4.1.1
+ * @package     WooCommerce-netgiro-plugin
+ */
+class WC_Netgiro extends WC_Payment_Gateway {
 
+	/**
+	 * Constructs a WC_netgiro instance.
+	 */
 	public function __construct() {
 		$this->id                 = 'netgiro';
 		$this->medthod_title      = 'Netgíró';
@@ -17,8 +42,8 @@ class WC_netgiro extends WC_Payment_Gateway {
 		$this->init_form_fields();
 		$this->init_settings();
 
-		$this->payment_gateway_url     = $this->settings['test'] == 'yes' ? 'https://test.netgiro.is/securepay/' : 'https://securepay.netgiro.is/v1/';
-		$this->payment_gateway_api_url = $this->settings['test'] == 'yes' ? 'https://test.netgiro.is/partnerapi/' : 'https://api.netgiro.is/partner/';
+		$this->payment_gateway_url     = 'yes' === $this->settings['test'] ? 'https://test.netgiro.is/securepay/' : 'https://securepay.netgiro.is/v1/';
+		$this->payment_gateway_api_url = 'yes' === $this->settings['test'] ? 'https://test.netgiro.is/partnerapi/' : 'https://api.netgiro.is/partner/';
 
 		$this->title          = sanitize_text_field( $this->settings['title'] );
 		$this->description    = $this->settings['description'];
@@ -40,48 +65,51 @@ class WC_netgiro extends WC_Payment_Gateway {
 
 	}
 
-	function init_form_fields() {
+	/**
+	 * Initializes form fields.
+	 */
+	public function init_form_fields() {
 
 		$this->form_fields = array(
 			'enabled'        => array(
-				'title'   => __( 'Enable/Disable', 'netgiro' ),
+				'title'   => esc_html__( 'Enable/Disable', 'netgiro' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Netgíró Payment Module.', 'netgiro' ),
+				'label'   => esc_html__( 'Enable Netgíró Payment Module.', 'netgiro' ),
 				'default' => 'no',
 			),
 			'title'          => array(
-				'title'       => __( 'Title', 'netgiro' ),
+				'title'       => esc_html__( 'Title', 'netgiro' ),
 				'type'        => 'text',
-				'description' => __( 'Title of payment method on checkout page', 'netgiro' ),
-				'default'     => __( 'Netgíró', 'netgiro' ),
+				'description' => esc_html__( 'Title of payment method on checkout page', 'netgiro' ),
+				'default'     => esc_html__( 'Netgíró', 'netgiro' ),
 			),
 			'description'    => array(
-				'title'       => __( 'Lýsing', 'netgiro' ),
+				'title'       => esc_html__( 'Lýsing', 'netgiro' ),
 				'type'        => 'textarea',
-				'description' => __( 'Description of payment method on checkout page.', 'netgiro' ),
-				'default'     => __( 'Borgaðu með Netgíró.', 'netgiro' ),
+				'description' => esc_html__( 'Description of payment method on checkout page.', 'netgiro' ),
+				'default'     => esc_html__( 'Borgaðu með Netgíró.', 'netgiro' ),
 			),
 			'test'           => array(
-				'title'       => __( 'Prófunarumhverfi', 'netgiro_valitor' ),
+				'title'       => esc_html__( 'Prófunarumhverfi', 'netgiro_valitor' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Senda á prófunarumhverfi Netgíró', 'netgiro' ),
-				'description' => __( 'If selected, you need to provide Application ID and Secret Key. Not the production keys for the merchant' ),
+				'label'       => esc_html__( 'Senda á prófunarumhverfi Netgíró', 'netgiro' ),
+				'description' => esc_html__( 'If selected, you need to provide Application ID and Secret Key. Not the production keys for the merchant' ),
 				'default'     => 'option_is_enabled',
 			),
 			'application_id' => array(
-				'title'       => __( 'Application ID', 'netgiro' ),
+				'title'       => esc_html__( 'Application ID', 'netgiro' ),
 				'type'        => 'text',
 				'default'     => '881E674F-7891-4C20-AFD8-56FE2624C4B5',
-				'description' => __( 'Available from https://partner.netgiro.is or provided by Netgíró' ),
+				'description' => esc_html__( 'Available from https://partner.netgiro.is or provided by Netgíró' ),
 			),
 			'secretkey'      => array(
-				'title'       => __( 'Secret Key', 'netgiro' ),
+				'title'       => esc_html__( 'Secret Key', 'netgiro' ),
 				'type'        => 'textarea',
-				'description' => __( 'Available from https://partner.netgiro.is or provided by Netgíró', 'netgiro' ),
+				'description' => esc_html__( 'Available from https://partner.netgiro.is or provided by Netgíró', 'netgiro' ),
 				'default'     => 'YCFd6hiA8lUjZejVcIf/LhRXO4wTDxY0JhOXvQZwnMSiNynSxmNIMjMf1HHwdV6cMN48NX3ZipA9q9hLPb9C1ZIzMH5dvELPAHceiu7LbZzmIAGeOf/OUaDrk2Zq2dbGacIAzU6yyk4KmOXRaSLi8KW8t3krdQSX7Ecm8Qunc/A=',
 			),
 			'cancel_page_id' => array(
-				'title'       => __( 'Cancel Page' ),
+				'title'       => esc_html__( 'Cancel Page' ),
 				'type'        => 'select',
 				'options'     => $this->get_pages( 'Select Page' ),
 				'description' => 'URL if payment cancelled',
@@ -93,10 +121,15 @@ class WC_netgiro extends WC_Payment_Gateway {
 	 *  Options for the admin interface
 	 **/
 	public function admin_options() {
-		echo '<h3>' . __( 'Netgíró Payment Gateway', 'netgiro' ) . '</h3>';
-		echo '<p>' . __( 'Verslaðu á netinu með Netgíró á einfaldan hátt.' ) . '</p>';
-		if ( get_woocommerce_currency() != 'ISK' ) {
-			echo '<div class="">&#9888; This payment method only works with <strong>ISK</strong> but default currency is <strong>' . get_woocommerce_currency() . '</strong></div>';
+		echo '<h3>' . esc_html__( 'Netgíró Payment Gateway', 'netgiro' ) . '</h3>';
+		echo '<p>' . esc_html__( 'Verslaðu á netinu með Netgíró á einfaldan hátt.' ) . '</p>';
+		if ( esc_html( get_woocommerce_currency() ) !== 'ISK' ) {
+			echo '<div class="">&#9888; ' .
+			esc_html__( 'This payment method only works with', 'netgiro' ) .
+			' <strong>ISK</strong> ' .
+			esc_html__( 'but default currency is', 'netgiro' ) .
+			' <strong>' . esc_html( get_woocommerce_currency() ) .
+			'</strong></div>';
 		}
 		echo '<table class="form-table">';
 		$this->generate_settings_html();
@@ -106,20 +139,60 @@ class WC_netgiro extends WC_Payment_Gateway {
 	/**
 	 *  There are no payment fields for netgiro, but we want to show the description if set.
 	 **/
-	function payment_fields() {
+	public function payment_fields() {
 		if ( $this->description ) {
-			echo wpautop( wptexturize( $this->description ) );
+			echo wp_kses_post( wpautop( wptexturize( $this->description ) ) );
 		}
 	}
 
 	/**
-	 * Receipt
-	 **/
-	function receipt_page( $order ) {
-		echo $this->generate_netgiro_form( $order );
+	 * Receipt Page.
+	 *
+	 * @param int $order Order number.
+	 */
+	public function receipt_page( $order ) {
+
+		$allowed_html = array(
+			'style'  => array(),
+			'form'   => array(
+				'action' => true,
+				'method' => true,
+				'id'     => true,
+			),
+			'input'  => array(
+				'type'  => true,
+				'name'  => true,
+				'class' => true,
+				'id'    => true,
+				'value' => true,
+			),
+			'a'      => array(
+				'class' => true,
+				'href'  => true,
+			),
+			'p'      => array(),
+			'strong' => array(),
+			'li'     => array(
+				'style' => true,
+				'class' => true,
+			),
+			'img'    => array(
+				'src' => true,
+				'alt' => true,
+			),
+		);
+		$output       = $this->generate_netgiro_form( $order );
+		echo wp_kses( $output, $allowed_html );
 	}
 
-	function validate_item_array( $item ) {
+	/**
+	 * Validates the item array.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return bool True if item data is valid, false otherwise.
+	 */
+	public function validate_item_array( $item ) {
 		if ( empty( $item['line_total'] ) ) {
 			$item['line_total'] = 0;
 		}
@@ -145,7 +218,11 @@ class WC_netgiro extends WC_Payment_Gateway {
 
 	/**
 	 * Generate netgiro button link
-	 **/
+	 *
+	 * @param string $order_id The Order ID.
+	 *
+	 * @return string
+	 */
 	public function generate_netgiro_form( $order_id ) {
 
 		global $woocommerce;
@@ -156,26 +233,26 @@ class WC_netgiro extends WC_Payment_Gateway {
 
 		$order_id = sanitize_text_field( $order_id );
 		$order    = new WC_Order( $order_id );
-		$txnid    = $order_id . '_' . date( 'ymds' );
+		$txnid    = $order_id . '_' . gmdate( 'ymds' );
 
 		if ( ! is_numeric( $order->get_total() ) ) {
 			return $this->get_error_message();
 		}
 
 		$round_numbers          = $this->round_numbers;
-		$payment_Cancelled_url  = ( $this->cancel_page_id == '' || $this->cancel_page_id == 0 ) ? get_site_url() . '/' : get_permalink( $this->cancel_page_id );
-		$payment_Confirmed_url  = add_query_arg( 'wc-api', 'WC_netgiro_callback', home_url( '/' ) );
-		$payment_Successful_url = add_query_arg( 'wc-api', 'WC_netgiro', home_url( '/' ) );
+		$payment_cancelled_url  = ( '' === $this->cancel_page_id || 0 === $this->cancel_page_id ) ? get_site_url() . '/' : get_permalink( $this->cancel_page_id );
+		$payment_confirmed_url  = add_query_arg( 'wc-api', 'WC_netgiro_callback', home_url( '/' ) );
+		$payment_successful_url = add_query_arg( 'wc-api', 'WC_netgiro', home_url( '/' ) );
 		$order_dump             = '';
 
 		$total = round( number_format( $order->get_total(), 0, '', '' ) );
 
-		if ( $round_numbers == 'yes' ) {
+		if ( 'yes' === $round_numbers ) {
 			$total = round( $total );
 		}
 
 		$str       = $this->secretkey . $order_id . $total . $this->application_id;
-		$Signature = hash( 'sha256', $str );
+		$signature = hash( 'sha256', $str );
 
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -183,17 +260,17 @@ class WC_netgiro extends WC_Payment_Gateway {
 		$plugin_data    = get_plugin_data( __FILE__ );
 		$plugin_version = $plugin_data['Version'];
 
-		// Netgiro arguments
+		// Netgiro arguments.
 		$netgiro_args = array(
 			'ApplicationID'        => $this->application_id,
 			'Iframe'               => 'false',
-			'PaymentSuccessfulURL' => $payment_Successful_url,
-			'PaymentCancelledURL'  => $payment_Cancelled_url,
-			'PaymentConfirmedURL'  => $payment_Confirmed_url,
+			'PaymentSuccessfulURL' => $payment_successful_url,
+			'PaymentCancelledURL'  => $payment_cancelled_url,
+			'PaymentConfirmedURL'  => $payment_confirmed_url,
 			'ConfirmationType'     => '0',
 			'ReferenceNumber'      => $order_id,
 			'TotalAmount'          => $total,
-			'Signature'            => $Signature,
+			'Signature'            => $signature,
 			'PrefixUrlParameters'  => 'true',
 			'ClientInfo'           => 'System: Woocommerce ' . $plugin_version,
 		);
@@ -211,33 +288,34 @@ class WC_netgiro extends WC_Payment_Gateway {
 			$netgiro_args_array[] = "<input type='hidden' name='$key' value='$value'/>";
 		}
 
-		// Woocommerce -> Netgiro Items
+		// Woocommerce -> Netgiro Items.
 		foreach ( $order->get_items() as $item ) {
-			$validationPass = $this->validate_item_array( $item );
+			$validation_pass = $this->validate_item_array( $item );
 
-			if ( ! $validationPass ) {
+			if ( ! $validation_pass ) {
 				return $this->get_error_message();
 			}
 
-			$unitPrice = $order->get_item_subtotal( $item, true, $round_numbers == 'yes' );
-			$amount    = $order->get_line_subtotal( $item, true, $round_numbers == 'yes' );
+			$unit_price = $order->get_item_subtotal( $item, true, 'yes' === $round_numbers );
+			$amount     = $order->get_line_subtotal( $item, true, 'yes' === $round_numbers );
 
-			if ( $round_numbers == 'yes' ) {
-				$unitPrice = round( $unitPrice );
-				$amount    = round( $amount );
+			if ( 'yes' === $round_numbers ) {
+				$unit_price = round( $unit_price );
+				$amount     = round( $amount );
 			}
 
 			$items[] = array(
 				'ProductNo' => $item['product_id'],
 				'Name'      => $item['name'],
-				'UnitPrice' => $unitPrice,
+				'UnitPrice' => $unit_price,
 				'Amount'    => $amount,
 				'Quantity'  => $item['qty'] * 1000,
 			);
 		}
 
-		// Create Items
-		for ( $i = 0; $i <= count( $items ) - 1; $i++ ) {
+		// Create Items.
+		$no_of_items = count( $items );
+		for ( $i = 0; $i <= $no_of_items - 1; $i++ ) {
 			foreach ( $items[ $i ] as $key => $value ) {
 				$netgiro_items_array[] = "<input type='hidden' name='Items[$i].$key' value='$value'/>";
 			}
@@ -248,15 +326,6 @@ class WC_netgiro extends WC_Payment_Gateway {
 		}
 
 		return '
-    <style>
-    #netgiro_methods { padding: 0px; margin: 0px; }
-    #netgiro_methods li { margin: 0px; margin-bottom: -1px; background: #f3f3f3; border: solid 1px #ccc; padding: 15px; color: #676968; list-style:none; }
-    #netgiro_methods li .logo { float: right; width: 250px; }
-    #netgiro_methods li .logo img { border: none; box-shadow: none;}
-    #netgiro_methods strong { font-size: 1.7em; font-weight: bold; }
-    #netgiro_methods p { margin: 0px; }
-    </style>
-
     <form action="' . $this->gateway_url . '" method="post" id="netgiro_payment_form">
         ' . implode( '', $netgiro_args_array ) . '
         ' . implode( '', $netgiro_items_array ) . '
@@ -267,26 +336,26 @@ class WC_netgiro extends WC_Payment_Gateway {
         <a class="button cancel" href="' . $order->get_cancel_order_url() . '">' . __( 'Hætta við greiðslu', 'netgiro' ) . '</a>
         </p>
 
-        <script>
-        jQuery(function() {
-            jQuery(\'.method_reikningur\').click(function() {
-                jQuery(this).find(\'input\').prop(\'checked\', true);
-            });
-        });
-        </script>
-
     </form>
         ';
 	}
 
-	function get_error_message() {
+	/**
+	 * Retrieves the error message to display when a problem occurs.
+	 *
+	 * @return string The error message in Icelandic language.
+	 */
+	public function get_error_message() {
 		return 'Villa kom upp við vinnslu beiðni þinnar. Vinsamlega reyndu aftur eða hafðu samband við þjónustuver Netgíró með tölvupósti á netgiro@netgiro.is';
 	}
 
 	/**
-	 * Process the payment and return the result
-	 **/
-	function process_payment( $order_id ) {
+	 * Process the payment and return the result.
+	 *
+	 * @param int $order_id The ID of the order to process.
+	 * @return array The result of the payment processing and the URL to redirect to.
+	 */
+	public function process_payment( $order_id ) {
 		$order = new WC_Order( $order_id );
 
 		return array(
@@ -295,58 +364,73 @@ class WC_netgiro extends WC_Payment_Gateway {
 		);
 	}
 
-	function netgiro_response() {
+	/**
+	 * Handle the Netgiro response.
+	 *
+	 * @return void
+	 */
+	public function netgiro_response() {
 		$this->handle_netgiro_call( true );
 	}
 
-	function netgiro_callback() {
+	/**
+	 * Handle the Netgiro callback.
+	 *
+	 * @return void
+	 */
+	public function netgiro_callback() {
 		$this->handle_netgiro_call( false );
 	}
 
-	function handle_netgiro_call( bool $doRedirect ) {
+	/**
+	 * Process the Netgiro call.
+	 *
+	 * @param bool $do_redirect Whether to redirect after handling the call.
+	 * @return void
+	 */
+	public function handle_netgiro_call( bool $do_redirect ) {
 		global $woocommerce;
-
 		$logger = wc_get_logger();
 
-		if ( ( isset( $_GET['ng_netgiroSignature'] ) && $_GET['ng_netgiroSignature'] )
-			&& $_GET['ng_orderid'] && $_GET['ng_transactionid'] && $_GET['ng_signature']
-		) {
+		$ng_netgiro_signature = isset( $_GET['ng_netgiroSignature'] ) ? sanitize_text_field( wp_unslash( $_GET['ng_netgiroSignature'] ) ) : false;
+		$ng_orderid           = isset( $_GET['ng_orderid'] ) ? sanitize_text_field( wp_unslash( $_GET['ng_orderid'] ) ) : false;
+		$ng_transactionid     = isset( $_GET['ng_transactionid'] ) ? sanitize_text_field( wp_unslash( $_GET['ng_transactionid'] ) ) : false;
+		$ng_signature         = isset( $_GET['ng_signature'] ) ? sanitize_text_field( wp_unslash( $_GET['ng_signature'] ) ) : false;
 
-			$signature      = sanitize_text_field( $_GET['ng_netgiroSignature'] );
-			$orderId        = sanitize_text_field( $_GET['ng_orderid'] );
-			$order          = new WC_Order( $orderId );
+		if ( $ng_netgiro_signature && $ng_orderid && $ng_transactionid && $ng_signature ) {
+
+			$order          = new WC_Order( $ng_orderid );
 			$secret_key     = sanitize_text_field( $this->secretkey );
-			$invoice_number = sanitize_text_field( $_REQUEST['ng_invoiceNumber'] );
-			$transactionId  = sanitize_text_field( $_REQUEST['ng_transactionid'] );
-			$totalAmount    = sanitize_text_field( $_REQUEST['ng_totalAmount'] );
-			$status         = sanitize_text_field( $_REQUEST['ng_status'] );
+			$invoice_number = isset( $_REQUEST['ng_invoiceNumber'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['ng_invoiceNumber'] ) ) : '';
+			$total_amount   = isset( $_REQUEST['ng_totalAmount'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['ng_totalAmount'] ) ) : '';
+			$status         = isset( $_REQUEST['ng_status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['ng_status'] ) ) : '';
 
-			$str  = $secret_key . $orderId . $transactionId . $invoice_number . $totalAmount . $status;
+			$str  = $secret_key . $ng_orderid . $ng_transactionid . $invoice_number . $total_amount . $status;
 			$hash = hash( 'sha256', $str );
 
-			// correct signature and order is success
-			if ( $hash == $signature && is_numeric( $invoice_number ) ) {
+			// correct signature and order is success.
+			if ( $hash == $ng_netgiro_signature && is_numeric( $invoice_number ) ) {
 				$order->payment_complete();
 				$order->add_order_note( 'Netgíró greiðsla tókst<br/>Tilvísunarnúmer frá Netgíró: ' . $invoice_number );
-				$order->set_transaction_id( sanitize_text_field( $transactionId ) );
+				$order->set_transaction_id( sanitize_text_field( $ng_transactionid ) );
 				$order->save();
 				$woocommerce->cart->empty_cart();
 			} else {
-				$failed_message = 'Netgiro payment failed. Woocommerce order id: ' . $orderId . ' and Netgiro reference no.: ' . $invoice_number . ' does relate to signature: ' . $signature;
+				$failed_message = 'Netgiro payment failed. Woocommerce order id: ' . $ng_orderid . ' and Netgiro reference no.: ' . $invoice_number . ' does relate to signature: ' . $ng_netgiro_signature;
 
-				// Set order status to failed
+				// Set order status to failed.
 				if ( is_bool( $order ) === false ) {
 					$logger->debug( $failed_message, array( 'source' => 'netgiro_response' ) );
 					$order->update_status( 'failed' );
 					$order->add_order_note( $failed_message );
 				} else {
-					$logger->debug( 'error netgiro_response - order not found: ' . $orderId, array( 'source' => 'netgiro_response' ) );
+					$logger->debug( 'error netgiro_response - order not found: ' . $ng_orderid, array( 'source' => 'netgiro_response' ) );
 				}
 
-				wc_add_notice( 'Ekki tókst að staðfesta Netgíró greiðslu! Vinsamlega hafðu samband við verslun og athugað stöðuna á pöntun þinni nr. ' . $orderId, 'error' );
+				wc_add_notice( 'Ekki tókst að staðfesta Netgíró greiðslu! Vinsamlega hafðu samband við verslun og athugað stöðuna á pöntun þinni nr. ' . $ng_orderid, 'error' );
 			}
 
-			if ( $doRedirect === true ) {
+			if ( true === $do_redirect ) {
 				wp_redirect( $this->get_return_url( $order ) );
 			}
 
@@ -355,8 +439,15 @@ class WC_netgiro extends WC_Payment_Gateway {
 	}
 
 
-	// Get all pages for admin options
-	function get_pages( $title = false, $indent = true ) {
+	/**
+	 * Get all pages for admin options.
+	 *
+	 * @param bool $title   Whether to include a title in the page list.
+	 * @param bool $indent  Whether to show indented child pages.
+	 *
+	 * @return array        The page list.
+	 */
+	public function get_pages( $title = false, $indent = true ) {
 		$wp_pages  = get_pages( 'sort_column=menu_order' );
 		$page_list = array();
 		if ( $title ) {
@@ -373,7 +464,7 @@ class WC_netgiro extends WC_Payment_Gateway {
 					$has_parent = $next_page->post_parent;
 				}
 			}
-			// add to page list array array
+			// add to page list array array.
 			$page_list[ $page->ID ] = $prefix . $page->post_title;
 		}
 		return $page_list;
@@ -386,29 +477,38 @@ class WC_netgiro extends WC_Payment_Gateway {
 	 * @param  float  $amount Refund amount.
 	 * @param  string $reason Refund reason.
 	 * @return bool|WP_Error True or false based on success, or a WP_Error object.
+	 * @throws Exception      If the refund is not successful.
 	 */
-	function process_refund( $order_id, $amount = null, $reason = '' ) {
-		$order         = wc_get_order( $order_id );
-		$transactionId = $this->get_transaction( $order );
-		$response      = $this->post_refund( $transactionId, $amount, $reason );
+	public function process_refund( $order_id, $amount = null, $reason = '' ) {
+		$order          = wc_get_order( $order_id );
+		$transaction_id = $this->get_transaction( $order );
+		$response       = $this->post_refund( $transaction_id, $amount, $reason );
 
 		if ( ! $response['refunded'] ) {
 			$order->add_order_note( 'Refund not successful, reason : ' . $response['message'] );
-			throw new Exception( __( $response['message'], 'woocommerce' ) );
+			throw new Exception( __( 'Refund not successful, reason: ', 'woocommerce' ) . $response['message'] );
 		} else {
 			$order->add_order_note( 'Refund successful ' . $response['message'] );
 			return true;
 		}
 	}
 
-	function post_refund( $transactionId, $amount, $reason = '' ) {
+	/**
+	 * Perform a refund request.
+	 *
+	 * @param string $transaction_id The transaction ID.
+	 * @param float  $amount        The refund amount.
+	 * @param string $reason        The refund reason (optional).
+	 * @return array                An array with 'refunded' and 'message' keys.
+	 */
+	public function post_refund( $transaction_id, $amount, $reason = '' ) {
 		$url          = $this->payment_gateway_api_url . 'refund';
 		$body         = json_encode(
 			array(
-				'transactionId'      => $transactionId,
+				'transactionId'      => $transaction_id,
 				'refundAmount'       => (int) $amount,
 				// 'description'=> $reason, TODO þetta er lýsing á vöruni, ætti að fá nafn vörunar frá woo
-					'idempotencyKey' => $transactionId,
+					'idempotencyKey' => $transaction_id,
 			)
 		);
 			$response = wp_remote_post(
@@ -424,36 +524,44 @@ class WC_netgiro extends WC_Payment_Gateway {
 				)
 			);
 
-		$respBody = json_decode( $response['body'] );
+		$resp_body = json_decode( $response['body'] );
 
-		if ( $response['response']['code'] == 200 ) {
+		if ( 200 == $response['response']['code'] ) {
 			return array(
 				'refunded' => true,
-				'message'  => $respBody->Message,
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				'message'  => $resp_body->Message,
 			);
 		} else {
 			return array(
 				'refunded' => false,
-				'message'  => $respBody->Message,
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				'message'  => $resp_body->Message,
 			);
 		}
 	}
 
-	function get_transaction( $order ) {
-		if ( empty( $order ) or empty( $order->id ) ) {
+	/**
+	 * Get the transaction ID for a Netgiro payment.
+	 *
+	 * @param WC_Order $order The WooCommerce order object.
+	 * @return string|null    The transaction ID if found, otherwise null.
+	 */
+	public function get_transaction( $order ) {
+		if ( empty( $order ) || empty( $order->id ) ) {
 			return null;
 		}
-		$orderId       = $order->id;
-		$paymentMethod = $order->get_payment_method();
-		if ( $paymentMethod !== 'netgiro' ) {
+		$order_id       = $order->id;
+		$payment_method = $order->get_payment_method();
+		if ( 'netgiro' !== $payment_method ) {
 			return null;
 		}
 		$value = $order->get_transaction_id();
-		// Backwards compatibility
+		// Backwards compatibility.
 		if ( empty( $value ) ) {
 			$order_notes = wc_get_order_notes(
 				array(
-					'order_id' => $orderId,
+					'order_id' => $order_id,
 					'type'     => 'order',
 				)
 			);
@@ -465,8 +573,14 @@ class WC_netgiro extends WC_Payment_Gateway {
 		}
 		return $value;
 	}
-	// fela greiðsluleið ef gjaldmynt er ekki ISK
-	function hide_payment_gateway( $available_gateways ) {
+
+	/**
+	 * Hide the Netgiro payment gateway if the currency is not ISK.
+	 *
+	 * @param array $available_gateways The available payment gateways.
+	 * @return array                   The modified available payment gateways.
+	 */
+	public function hide_payment_gateway( $available_gateways ) {
 		if ( is_admin() ) {
 			return $available_gateways;
 		}
