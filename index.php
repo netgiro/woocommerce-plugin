@@ -73,7 +73,7 @@ function woocommerce_netgiro_init() {
 
 
 	function renderView($viewName, $var = array()) {
- 	   require_once plugin_dir_path( dirname( __FILE__ ) ) . 'WooCommerce-netgiro-plugin/assets/view/'. $viewName . '.php';
+	   require_once plugin_dir_path( ( __FILE__ ) ) . 'assets/view/'. $viewName . '.php';
 	}
 
 	class Netgiro_Template {
