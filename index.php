@@ -37,28 +37,7 @@ function woocommerce_netgiro_init() {
 
 	add_filter( 'woocommerce_payment_gateways', 'woocommerce_add_netgiro_gateway' );
 
-
-	/**
-	 * Hide the Netgiro payment gateway if the currency is not ISK.
-	 *
-	 * @param array $available_gateways The available payment gateways.
-	 * @return array                   The modified available payment gateways.
-	 */
-	function hide_payment_gateway( $available_gateways ) {
-		if ( is_admin() ) {
-			return $available_gateways;
-		}
-		if ( get_woocommerce_currency() !== 'ISK' ) {
-			$gateway_id = 'netgiro';
-			if ( isset( $available_gateways[ $gateway_id ] ) ) {
-				unset( $available_gateways[ $gateway_id ] );
-			}
-		}
-		return $available_gateways;
-	}
-
-//	add_filter( 'woocommerce_available_payment_gateways', 'hide_payment_gateway' );
-
+	
 	/**
 	 * Enqueue Netgiro script.
 	 */
