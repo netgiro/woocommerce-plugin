@@ -1,18 +1,5 @@
 <?php
-class Netgiro_Admin {
-
-    /**
-	 *
-	 * @since    4.2.0
-	 * @access   protected
-	 * @var      WC_Netgiro    $payment_gateway_reference
-	 */
-    protected $payment_gateway_reference;
-
-    public function __construct(&$payment_gateway_reference)
-    {
-		$this->payment_gateway_reference = $payment_gateway_reference;
-    }
+class Netgiro_Admin extends Netgiro_Template {
 
     public function get_form_fields()
     {
@@ -57,10 +44,42 @@ class Netgiro_Admin {
             'cancel_page_id' => array(
                 'title'       => esc_html__( 'Cancel Page' ),
                 'type'        => 'select',
-                'options'     => $this->payment_gateway_reference->get_pages( 'Select Page' ),
+                'options'     => $this->get_pages( 'Select Page' ),
                 'description' => 'URL if payment cancelled',
             ),
         );
 
     }
+
+
+    /**
+	 * Get all pages for admin options.
+	 *
+	 * @param bool $title   Whether to include a title in the page list.
+	 * @param bool $indent  Whether to show indented child pages.
+	 *
+	 * @return array        The page list.
+	 */
+	public function get_pages( $title = false, $indent = true ) {
+		$wp_pages  = get_pages( 'sort_column=menu_order' );
+		$page_list = array();
+		if ( $title ) {
+			$page_list[] = $title;
+		}
+		foreach ( $wp_pages as $page ) {
+			$prefix = '';
+			// show indented child pages?
+			if ( $indent ) {
+				$has_parent = $page->post_parent;
+				while ( $has_parent ) {
+					$prefix    .= ' - ';
+					$next_page  = get_page( $has_parent );
+					$has_parent = $next_page->post_parent;
+				}
+			}
+			// add to page list array array.
+			$page_list[ $page->ID ] = $prefix . $page->post_title;
+		}
+		return $page_list;
+	}
 }
