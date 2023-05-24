@@ -104,7 +104,6 @@ class WC_Netgiro extends WC_Payment_Gateway {
 		add_action( 'woocommerce_api_wc_' . $this->id, array( $this, 'netgiro_response' ) );
 		add_action( 'woocommerce_api_wc_' . $this->id . '_callback', array( $this, 'netgiro_callback' ) );
 		add_filter( 'woocommerce_available_payment_gateways', array( $this, 'hide_payment_gateway' ) );
-
 	}
 
 	/**
@@ -141,9 +140,6 @@ class WC_Netgiro extends WC_Payment_Gateway {
 	public function receipt_page( $order ) {
 		$this->payment_form->generate_netgiro_form( $order );
 	}
-
-
-
 
 	/**
 	 * Process the payment and return the result.
@@ -199,6 +195,25 @@ class WC_Netgiro extends WC_Payment_Gateway {
 			$order->add_order_note( 'Refund successful ' . $response['message'] );
 			return true;
 		}
+	}
+	
+	/**
+	 * Hide the Netgiro payment gateway if the currency is not ISK.
+	 *
+	 * @param array $available_gateways The available payment gateways.
+	 * @return array                   The modified available payment gateways.
+	 */
+	function hide_payment_gateway( $available_gateways ) {
+		if ( is_admin() ) {
+			return $available_gateways;
+		}
+		if ( get_woocommerce_currency() !== 'ISK' ) {
+			$gateway_id = 'netgiro';
+			if ( isset( $available_gateways[ $gateway_id ] ) ) {
+				unset( $available_gateways[ $gateway_id ] );
+			}
+		}
+		return $available_gateways;
 	}
 
 }

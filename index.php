@@ -57,7 +57,7 @@ function woocommerce_netgiro_init() {
 		return $available_gateways;
 	}
 
-	add_filter( 'woocommerce_available_payment_gateways', 'hide_payment_gateway' );
+//	add_filter( 'woocommerce_available_payment_gateways', 'hide_payment_gateway' );
 
 	/**
 	 * Enqueue Netgiro script.
@@ -73,6 +73,22 @@ function woocommerce_netgiro_init() {
 
 
 	function renderView($viewName, $var = array()) {
- 	   require_once plugin_dir_path( dirname( __FILE__ ) ) . 'assets/view/'. $viewName . '.php';
+ 	   require_once plugin_dir_path( dirname( __FILE__ ) ) . 'WooCommerce-netgiro-plugin/assets/view/'. $viewName . '.php';
+	}
+
+	class Netgiro_Template {
+
+		/**
+		 *
+		 * @since    4.2.0
+		 * @access   protected
+		 * @var      WC_Netgiro    $payment_gateway_reference
+		 */
+		protected $payment_gateway_reference;
+
+		public function __construct( &$payment_gateway_reference ) {
+			$this->payment_gateway_reference = $payment_gateway_reference;
+
+		}
 	}
 }
