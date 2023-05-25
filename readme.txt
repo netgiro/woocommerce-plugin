@@ -1,12 +1,13 @@
-
 === Netgíró Payment Gateway for Woocommerce ===
 Contributors: netgiro
 Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocommerce
 Donate link: -
+Stable tag: 4.2.0
 Requires at least: 4.6
 Tested up to: 6.2.2
-Stable tag: 4.0.2
 Requires PHP: 7.1
+WC requires at least: 4.6.0
+WC tested up to: 7.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +54,9 @@ Register on our page: <a href="https://partner.netgiro.is/Account/Register">http
 2. Actual Netgíró checkout page checkout_page1.png
 
 == Changelog ==
+
+= 4.2.0 =
+* Refund function added, removed unnecessary code and update to coding standards
 
 = 4.0.2 =
 * Tested up to Wordpress version 6.2.2 and WooCommerce version 7.2.2

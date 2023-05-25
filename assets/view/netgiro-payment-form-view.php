@@ -14,7 +14,7 @@
 		}
         ?>
         
-    <p align="right">
+    <p style="text-align: right">
     <input type="submit" class="button alt" id="submit_netgiro_payment_form" value="Greiða með Netgíró" /> 
     <a class="button cancel" href="<?=$var['cancel_order_url']?>">Hætta við greiðslu</a>
     </p>

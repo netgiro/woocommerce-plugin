@@ -1,62 +1,51 @@
-<?php
-/**
- * Plugin Name: Netgíró Payment gateway for Woocommerce
- * Plugin URI: http://www.netgiro.is
- * Description: Netgíró Payment gateway for Woocommerce
- * Version: 4.1.1
- * Author: Netgíró
- * Author URI: http://www.netgiro.is
- * WC requires at least: 4.6.0
- * WC tested up to: 7.6.1
- *
- * @package WooCommerce-netgiro-plugin
- */
+<?php /**
+	   * Plugin Name: Netgíró Payment gateway for Woocommerce
+	   * Plugin URI: http://www.netgiro.is
+	   * Description: Netgíró Payment gateway for Woocommerce
+	   * Author: Netgíró
+	   * Author URI: http://www.netgiro.is
+	   *
+	   * @package WooCommerce-netgiro-plugin
+	   */
 
 /**
  * WC_netgiro Payment Gateway
- *
  * Provides a Netgíró Payment Gateway for WooCommerce.
  *
  * @class       WC_netgiro
  * @extends     WC_Payment_Gateway
- * @version     4.1.1
- * @package     WooCommerce-netgiro-plugin
  */
 class WC_Netgiro extends WC_Payment_Gateway {
 
 
 	/**
+	 * Pprotected varible
 	 *
-	 * @since    4.2.0
-	 * @access   protected
-	 * @var      Netgiro_Admin    $admin 
+	 * @var      Netgiro_Admin    $admin
 	 */
 	protected $admin;
 
 	/**
+	 * Protected varible
 	 *
-	 * @since    4.2.0
-	 * @access   protected
-	 * @var      Netgiro_Refund    $refund    
+	 * @var      Netgiro_Refund    $refund
 	 */
 	protected $refund;
 
 	/**
+	 * Protected varible
 	 *
-	 * @since    4.2.0
-	 * @access   protected
-	 * @var      Netgiro_Payment_Call    $payment_call    
+	 * @var      Netgiro_Payment_Call    $payment_call
 	 */
 	protected $payment_call;
 
 	/**
+	 * Protected varible
 	 *
-	 * @since    4.2.0
-	 * @access   protected
-	 * @var      Netgiro_Payment_Form    $payment_form    
+	 * @var      Netgiro_Payment_Form    $payment_form
 	 */
 	protected $payment_form;
-	
+
 	/**
 	 * Constructs a WC_netgiro instance.
 	 */
@@ -65,11 +54,11 @@ class WC_Netgiro extends WC_Payment_Gateway {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-netgiro-refund.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-netgiro-payment-call.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-netgiro-payment-form.php';
-		$this->admin = new Netgiro_Admin($this);
-		$this->refund = new Netgiro_Refund($this);
-		$this->payment_call = new Netgiro_Payment_Call($this);
-		$this->payment_form = new Netgiro_Payment_Form($this);
-		
+		$this->admin        = new Netgiro_Admin( $this );
+		$this->refund       = new Netgiro_Refund( $this );
+		$this->payment_call = new Netgiro_Payment_Call( $this );
+		$this->payment_form = new Netgiro_Payment_Form( $this );
+
 		$this->id                 = 'netgiro';
 		$this->medthod_title      = 'Netgíró';
 		$this->method_description = 'Plugin for accepting Netgiro payments with Woocommerce web shop.';
@@ -117,10 +106,13 @@ class WC_Netgiro extends WC_Payment_Gateway {
 	 *  Options for the admin interface
 	 **/
 	public function admin_options() {
-		renderView( 'netgiro-admin-view', [
-			'woocommerce_currency' => get_woocommerce_currency(),
-			'settings_html' =>  $this->generate_settings_html([], false),
-		] );
+		render_view(
+			'netgiro-admin-view',
+			array(
+				'woocommerce_currency' => get_woocommerce_currency(),
+				'settings_html'        => $this->generate_settings_html( array(), false ),
+			)
+		);
 	}
 
 	/**
@@ -196,14 +188,14 @@ class WC_Netgiro extends WC_Payment_Gateway {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Hide the Netgiro payment gateway if the currency is not ISK.
 	 *
 	 * @param array $available_gateways The available payment gateways.
 	 * @return array                   The modified available payment gateways.
 	 */
-	function hide_payment_gateway( $available_gateways ) {
+	public function hide_payment_gateway( $available_gateways ) {
 		if ( is_admin() ) {
 			return $available_gateways;
 		}

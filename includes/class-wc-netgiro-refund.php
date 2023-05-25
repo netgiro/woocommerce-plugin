@@ -37,9 +37,9 @@ class Netgiro_Refund extends Netgiro_Template {
 		$url          = $this->payment_gateway_reference->payment_gateway_api_url . 'refund';
 		$body         = wp_json_encode(
 			array(
-				'transactionId'      => $transaction_id,
-				'refundAmount'       => (int) $amount,
-				// 'description'=> description. 
+				'transactionId'  => $transaction_id,
+				'refundAmount'   => (int) $amount,
+				// 'description'=> description.
 				'idempotencyKey' => $transaction_id,
 			)
 		);

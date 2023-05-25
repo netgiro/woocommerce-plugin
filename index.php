@@ -1,18 +1,13 @@
-<?php
-/**
- * Plugin Name: Netgíró Payment gateway for Woocommerce
- * Plugin URI: http://www.netgiro.is
- * Description: Netgíró Payment gateway for Woocommerce
- * Version: 4.2.0
- * Author: Netgíró
- * Author URI: http://www.netgiro.is
- * WC requires at least: 4.6.0
- * WC tested up to: 7.7.0
- *
- * @package WooCommerce-netgiro-plugin
- */
-
-add_action( 'plugins_loaded', 'woocommerce_netgiro_init', 0 );
+<?php /**
+	   * Plugin Name: Netgíró Payment gateway for Woocommerce
+	   * Plugin URI: http://www.netgiro.is
+	   * Description: Netgíró Payment gateway for Woocommerce
+	   * Version: 4.2.0
+	   * Author: Netgíró
+	   * Author URI: http://www.netgiro.is
+	   *
+	   * @package WooCommerce-netgiro-plugin
+	   */
 
 /**
  * Initialize the Netgiro payment gateway.
@@ -23,6 +18,7 @@ function woocommerce_netgiro_init() {
 	}
 
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-netgiro.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-netgiro-template.php';
 
 	/**
 	 * Add the Netgiro gateway to WooCommerce.
@@ -37,9 +33,9 @@ function woocommerce_netgiro_init() {
 
 	add_filter( 'woocommerce_payment_gateways', 'woocommerce_add_netgiro_gateway' );
 
-	
 	/**
 	 * Enqueue Netgiro script.
+	 * disabled since not in use
 	 */
 	function netgiro_enqueue_scripts() {
 		$script_path = plugins_url( 'assets/js/script.js', __FILE__ );
@@ -48,26 +44,21 @@ function woocommerce_netgiro_init() {
 		wp_enqueue_script( 'netgiro-script', $script_path, array(), '1.0.0', true );
 		wp_enqueue_style( 'netgiro-style', $style_path, array(), '1.0.0', 'all' );
 	}
-	add_action( 'wp_enqueue_scripts', 'netgiro_enqueue_scripts' );
+	/**
+	 * Disabled since there is no scripts
+	 * add_action( 'wp_enqueue_scripts', 'netgiro_enqueue_scripts' ); !
+	 */
 
-
-	function renderView($viewName, $var = array()) {
-	   require_once plugin_dir_path( ( __FILE__ ) ) . 'assets/view/'. $viewName . '.php';
+	/**
+	 * Render view files
+	 *
+	 * @param string $view_name Name of view file.
+	 * @param array  $var Array with variables.
+	 */
+	function render_view( $view_name, $var = array() ) {
+		require_once plugin_dir_path( ( __FILE__ ) ) . 'assets/view/' . $view_name . '.php';
 	}
 
-	class Netgiro_Template {
-
-		/**
-		 *
-		 * @since    4.2.0
-		 * @access   protected
-		 * @var      WC_Netgiro    $payment_gateway_reference
-		 */
-		protected $payment_gateway_reference;
-
-		public function __construct( &$payment_gateway_reference ) {
-			$this->payment_gateway_reference = $payment_gateway_reference;
-
-		}
-	}
 }
+
+add_action( 'plugins_loaded', 'woocommerce_netgiro_init', 0 );

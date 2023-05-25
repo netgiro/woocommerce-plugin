@@ -25,12 +25,12 @@
 class Netgiro_Payment_Form extends Netgiro_Template {
 
 		/**
-	 * Generate netgiro button link
-	 *
-	 * @param string $order_id The Order ID.
-	 *
-	 * @return string
-	 */
+		 * Generate netgiro button link
+		 *
+		 * @param string $order_id The Order ID.
+		 *
+		 * @return string
+		 */
 	public function generate_netgiro_form( $order_id ) {
 
 		global $woocommerce;
@@ -49,9 +49,9 @@ class Netgiro_Payment_Form extends Netgiro_Template {
 
 		$round_numbers          = $this->payment_gateway_reference->round_numbers;
 		$payment_cancelled_url  = ( '' === $this->payment_gateway_reference->cancel_page_id ||
-									 0 === $this->payment_gateway_reference->cancel_page_id ) 
-									 	? get_site_url() . '/' :
-									 	get_permalink( $this->payment_gateway_reference->cancel_page_id );
+									 0 === $this->payment_gateway_reference->cancel_page_id )
+										? get_site_url() . '/' :
+										get_permalink( $this->payment_gateway_reference->cancel_page_id );
 		$payment_confirmed_url  = add_query_arg( 'wc-api', 'WC_netgiro_callback', home_url( '/' ) );
 		$payment_successful_url = add_query_arg( 'wc-api', 'WC_netgiro', home_url( '/' ) );
 
@@ -121,15 +121,17 @@ class Netgiro_Payment_Form extends Netgiro_Template {
 		if ( ! wp_http_validate_url( $this->payment_gateway_reference->gateway_url ) && ! wp_http_validate_url( $order->get_cancel_order_url() ) ) {
 			return $this->get_error_message();
 		}
-		renderView( 
-				'netgiro-payment-form-view', 
-				['gateway_url' => $this->payment_gateway_reference->gateway_url,
-				'netgiro_args' => $netgiro_args,
-				'no_of_items' => count( $items ),
-				'items' => $items,
-				'cancel_order_url' => $order->get_cancel_order_url()
-				] );
-		//require_once plugin_dir_path( dirname( __FILE__ ) ) . 'assets/view/netgiro-payment-form-view.php';
+		render_view(
+			'netgiro-payment-form-view',
+			array(
+				'gateway_url'      => $this->payment_gateway_reference->gateway_url,
+				'netgiro_args'     => $netgiro_args,
+				'no_of_items'      => count( $items ),
+				'items'            => $items,
+				'cancel_order_url' => $order->get_cancel_order_url(),
+			)
+		);
+		// require_once plugin_dir_path( dirname( __FILE__ ) ) . 'assets/view/netgiro-payment-form-view.php'; !
 	}
 
 	/**
