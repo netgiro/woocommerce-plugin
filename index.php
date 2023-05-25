@@ -17,8 +17,8 @@ function woocommerce_netgiro_init() {
 		return;
 	}
 
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-netgiro.php';
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-netgiro-template.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-netgiro-template.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-netgiro.php';
 
 	/**
 	 * Add the Netgiro gateway to WooCommerce.
@@ -27,7 +27,7 @@ function woocommerce_netgiro_init() {
 	 * @return array Filtered payment methods.
 	 */
 	function woocommerce_add_netgiro_gateway( $methods ) {
-		$methods[] = 'WC_Netgiro';
+		$methods[] = 'Netgiro';
 		return $methods;
 	}
 

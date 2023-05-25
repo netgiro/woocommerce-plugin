@@ -16,7 +16,7 @@ class Netgiro_Template {
 	/**
 	 * Template for Netgiro plugin
 	 *
-	 * @var      WC_Netgiro    $payment_gateway_reference
+	 * @var      Netgiro    $payment_gateway_reference
 	 */
 	protected $payment_gateway_reference;
 

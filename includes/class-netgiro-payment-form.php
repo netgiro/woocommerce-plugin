@@ -131,7 +131,6 @@ class Netgiro_Payment_Form extends Netgiro_Template {
 				'cancel_order_url' => $order->get_cancel_order_url(),
 			)
 		);
-		// require_once plugin_dir_path( dirname( __FILE__ ) ) . 'assets/view/netgiro-payment-form-view.php'; !
 	}
 
 	/**

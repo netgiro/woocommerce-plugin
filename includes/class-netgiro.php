@@ -15,7 +15,7 @@
  * @class       WC_netgiro
  * @extends     WC_Payment_Gateway
  */
-class WC_Netgiro extends WC_Payment_Gateway {
+class Netgiro extends WC_Payment_Gateway {
 
 
 	/**
@@ -50,10 +50,10 @@ class WC_Netgiro extends WC_Payment_Gateway {
 	 * Constructs a WC_netgiro instance.
 	 */
 	public function __construct() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-netgiro-admin.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-netgiro-refund.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-netgiro-payment-call.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-netgiro-payment-form.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-netgiro-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-netgiro-refund.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-netgiro-payment-call.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-netgiro-payment-form.php';
 		$this->admin        = new Netgiro_Admin( $this );
 		$this->refund       = new Netgiro_Refund( $this );
 		$this->payment_call = new Netgiro_Payment_Call( $this );
@@ -111,6 +111,7 @@ class WC_Netgiro extends WC_Payment_Gateway {
 			array(
 				'woocommerce_currency' => get_woocommerce_currency(),
 				'settings_html'        => $this->generate_settings_html( array(), false ),
+				'allowed_html'         => $this->allowed_html_tags(),
 			)
 		);
 	}
@@ -187,6 +188,67 @@ class WC_Netgiro extends WC_Payment_Gateway {
 			$order->add_order_note( 'Refund successful ' . $response['message'] );
 			return true;
 		}
+	}
+	/**
+	 * List of html tags allowed for netgiro-admin-view
+	 *
+	 * @return array Array with all html tags allowed
+	 */
+	public function allowed_html_tags() {
+		$allowed_html = array(
+			'tr'       => array(),
+			'th'       => array(
+				'scope' => array(),
+				'class' => array(),
+			),
+			'label'    => array(
+				'for' => array(),
+			),
+			'td'       => array(
+				'class' => array(),
+			),
+			'fieldset' => array(),
+			'legend'   => array(
+				'class' => array(),
+			),
+			'span'     => array(
+				'selected' => array(),
+				'disabled' => array(),
+				'value'    => array(),
+			),
+			'input'    => array(
+				'class'       => array(),
+				'type'        => array(),
+				'name'        => array(),
+				'id'          => array(),
+				'placeholder' => array(),
+				'value'       => array(),
+			),
+			'br'       => array(),
+			'p'        => array(
+				'class' => array(),
+			),
+			'textarea' => array(
+				'rows'        => array(),
+				'cols'        => array(),
+				'class'       => array(),
+				'type'        => array(),
+				'name'        => array(),
+				'id'          => array(),
+				'placeholder' => array(),
+			),
+			'select'   => array(
+				'id'    => array(),
+				'name'  => array(),
+				'class' => array(),
+			),
+			'option'   => array(
+				'selected' => array(),
+				'disabled' => array(),
+				'value'    => array(),
+			),
+		);
+		return $allowed_html;
 	}
 
 	/**
