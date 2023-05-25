@@ -223,6 +223,7 @@ class Netgiro extends WC_Payment_Gateway {
 				'id'          => array(),
 				'placeholder' => array(),
 				'value'       => array(),
+				'checked'     => array(),
 			),
 			'br'       => array(),
 			'p'        => array(
