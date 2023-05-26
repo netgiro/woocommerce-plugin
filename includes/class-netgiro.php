@@ -19,7 +19,7 @@ class Netgiro extends WC_Payment_Gateway {
 
 
 	/**
-	 * Pprotected varible
+	 * Protected varible
 	 *
 	 * @var      Netgiro_Admin    $admin
 	 */
