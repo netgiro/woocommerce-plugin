@@ -39,15 +39,9 @@ function woocommerce_netgiro_init() {
 	 */
 	function netgiro_enqueue_scripts() {
 		$script_path = plugins_url( 'assets/js/script.js', __FILE__ );
-		$style_path  = plugins_url( 'assets/css/style.css', __FILE__ );
-
 		wp_enqueue_script( 'netgiro-script', $script_path, array(), '1.0.0', true );
-		wp_enqueue_style( 'netgiro-style', $style_path, array(), '1.0.0', 'all' );
 	}
-	/**
-	 * Disabled since there is no scripts
-	 * add_action( 'wp_enqueue_scripts', 'netgiro_enqueue_scripts' ); !
-	 */
+	add_action( 'wp_enqueue_scripts', 'netgiro_enqueue_scripts' );
 
 	/**
 	 * Render view files
