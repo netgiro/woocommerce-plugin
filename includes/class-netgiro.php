@@ -179,7 +179,7 @@ class Netgiro extends WC_Payment_Gateway {
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 		$order          = wc_get_order( $order_id );
 		$transaction_id = $this->refund->get_transaction( $order );
-		$response       = $this->refund->post_refund( $transaction_id, $amount, $reason );
+		$response = $this->refund->post_refund( $transaction_id, $amount, $order_id, $reason );
 
 		if ( ! $response['refunded'] ) {
 			$order->add_order_note( 'Refund not successful, reason : ' . $response['message'] );

@@ -30,20 +30,22 @@ class Netgiro_Refund extends Netgiro_Template {
 	 *
 	 * @param string $transaction_id The transaction ID.
 	 * @param float  $amount        The refund amount.
+	 * @param int    $order_id        The Order ID.
 	 * @param string $reason        The refund reason (optional).
 	 * @return array                An array with 'refunded' and 'message' keys.
 	 */
-	public function post_refund( $transaction_id, $amount, $reason = '' ) {
-		$url          = $this->payment_gateway_reference->payment_gateway_api_url . 'refund';
-		$body         = wp_json_encode(
+	public function post_refund( $transaction_id, $amount, $order_id, $reason = '' ) {
+		$url             = $this->payment_gateway_reference->payment_gateway_api_url . 'refund';
+		$idempotency_key = $this->makeidempotencykey( $transaction_id, $order_id );
+		$body            = wp_json_encode(
 			array(
 				'transactionId'  => $transaction_id,
 				'refundAmount'   => (int) $amount,
 				// 'description'=> description.
-				'idempotencyKey' => $transaction_id,
+				'idempotencyKey' => $idempotency_key,
 			)
 		);
-			$response = wp_remote_post(
+			$response    = wp_remote_post(
 				$url,
 				array(
 					'method'  => 'POST',
@@ -72,6 +74,33 @@ class Netgiro_Refund extends Netgiro_Template {
 				'message'  => $resp_body->Message,
 			);
 		}
+	}
+
+	/**
+	 * Generate an idempotency key for a transaction.
+	 *
+	 * An idempotency key is a unique identifier that ensures a transaction can be safely retried without
+	 * causing duplicate or conflicting operations. This function generates an idempotency key by combining
+	 * the provided transaction ID with the number of refunds associated with the order.
+	 *
+	 * @param string $transaction_id The ID of the transaction.
+	 * @param int    $order_id       The ID of the order.
+	 * @return string The generated idempotency key.
+	 */
+	private function makeidempotencykey( $transaction_id, $order_id ) {
+		global $wpdb;
+		$order_id     = (int) $order_id;
+		$refunds_rows = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(ID) FROM {$wpdb->prefix}posts WHERE post_parent = %d AND post_type = %s",
+				$order_id,
+				'shop_order_refund'
+			)
+		);
+		if ( $wpdb->last_error ) {
+			$refunds_rows = 0;
+		}
+		return $transaction_id . '_' . $refunds_rows;
 	}
 
 	/**
