@@ -89,7 +89,8 @@ class Netgiro_Refund extends Netgiro_Template {
 	 */
 	private function makeidempotencykey( $transaction_id, $order_id ) {
 		global $wpdb;
-		$order_id     = (int) $order_id;
+		$order_id = (int) $order_id;
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$refunds_rows = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT COUNT(ID) FROM {$wpdb->prefix}posts WHERE post_parent = %d AND post_type = %s",
@@ -97,6 +98,7 @@ class Netgiro_Refund extends Netgiro_Template {
 				'shop_order_refund'
 			)
 		);
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		if ( $wpdb->last_error ) {
 			$refunds_rows = 0;
 		}
