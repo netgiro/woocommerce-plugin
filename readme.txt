@@ -1,12 +1,13 @@
-
 === Netgíró Payment Gateway for Woocommerce ===
 Contributors: netgiro
 Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocommerce
 Donate link: -
+Stable tag: 4.2.0
 Requires at least: 4.6
-Tested up to: 6.1.1
-Stable tag: 4.0.2
+Tested up to: 6.2.2
 Requires PHP: 7.1
+WC requires at least: 4.6.0
+WC tested up to: 7.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,16 +53,26 @@ Register on our page: <a href="https://partner.netgiro.is/Account/Register">http
 1. Login page for Netgíró checkout checkout_login.png
 2. Actual Netgíró checkout page checkout_page1.png
 
+== Third-Party Service Integration ==
+
+Our plugin seamlessly integrates with Netgíró, a trusted and secure payment gateway, to facilitate smooth and secure payment transactions. By connecting to netgiro.is, we ensure that your customers can make payments with confidence, while you receive real-time updates on the payment status.
+We take your security and privacy seriously. Netgíró's Privacy Policy, which outlines how they handle and protect user data, can be found here: <a href="https://www.netgiro.is/en/privacy-policy/">Netgíró Privacy Policy</a>. We recommend reviewing this policy to understand how Netgíró handles your customers' personal information.
+
 == Changelog ==
 
+= 4.2.0 =
+* Added refund function for improved user experience
+* Removed unnecessary code to optimize performance
+* Updated coding standards to enhance code quality
+
 = 4.0.2 =
-* Tested up to Wordpress version 6.2.2 and WooCommerce version 7.2.2
+* Tested the plugin with WordPress version 6.2.2 and WooCommerce version 7.2.2 for compatibility
 
 = 4.0.1 =
-* Tested up to Wordpress version 5.9.3 and WooCommerce version 6.5.1
+* Tested the plugin with WordPress version 5.9.3 and WooCommerce version 6.5.1 for compatibility
 
 = 4.0.0 =
-* Added callback for payment confirmation
+* Added callback function for payment confirmation to streamline the payment process
 
 = 3.6.1 =
 * Fix failure message
