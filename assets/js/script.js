@@ -1,9 +1,5 @@
 /**
- * Plugin Name: Netgíró Payment gateway for Woocommerce
- * Plugin URI: http://www.netgiro.is
- * Description: Netgíró Payment gateway for Woocommerce
- * Author: Netgíró
- * Author URI: http://www.netgiro.is
+ * Netgiro JS script
  *
  * @package WooCommerce-netgiro-plugin
  */
