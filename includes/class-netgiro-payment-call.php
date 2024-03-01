@@ -1,19 +1,19 @@
-<?php
+<?php 
 /**
  * Netgiro payment call
  *
  * @package WooCommerce-netgiro-plugin
  */
 
+defined( 'ABSPATH' ) || exit;
+
+
 /**
- * WC_netgiro Payment Gateway
+ * Netgiro Payment Call
+ * Provides a Netgíró Payment Call for WooCommerce
  *
- * Provides a Netgíró Payment Gateway for WooCommerce.
- *
- * @class       WC_netgiro
- * @extends     WC_Payment_Gateway
- * @version     4.1.1
- * @package     WooCommerce-netgiro-plugin
+ * @class       Netgiro_Payment_Call
+ * @extends     Netgiro_Template
  */
 class Netgiro_Payment_Call extends Netgiro_Template {
 
@@ -73,5 +73,4 @@ class Netgiro_Payment_Call extends Netgiro_Template {
 			exit;
 		}
 	}
-
 }

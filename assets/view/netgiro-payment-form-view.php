@@ -1,9 +1,9 @@
-<?php /**
-	   * Netgiro payment form view
-	   *
-	   * @package WooCommerce-netgiro-plugin
-	   */
-
+<?php
+/**
+ * Netgiro payment form view
+ *
+ * @package WooCommerce-netgiro-plugin
+*/
 ?>
 <form action="<?php echo esc_url( $var['gateway_url'] ); ?>" method="post" id="netgiro_payment_form">
 		<?php

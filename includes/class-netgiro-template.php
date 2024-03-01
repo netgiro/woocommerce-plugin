@@ -1,11 +1,17 @@
-<?php /**
-	   * Netgiro template
-	   *
-	   * @package WooCommerce-netgiro-plugin
-	   */
+<?php 
+/**
+ * Netgiro template
+ *
+ * @package WooCommerce-netgiro-plugin
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Template for Netgiro plugin
+ * Netgiro Template
+ * Provides a Netgíró Template for Nergiro Classes. 
+ *
+ * @class       Netgiro_Template
  */
 class Netgiro_Template {
 
@@ -23,6 +29,5 @@ class Netgiro_Template {
 	 */
 	public function __construct( &$payment_gateway_reference ) {
 		$this->payment_gateway_reference = $payment_gateway_reference;
-
 	}
 }
