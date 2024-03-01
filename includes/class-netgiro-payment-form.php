@@ -1,19 +1,19 @@
-<?php
+<?php 
 /**
  * Netgiro payment form
  *
  * @package WooCommerce-netgiro-plugin
  */
 
+defined( 'ABSPATH' ) || exit;
+
+
 /**
- * WC_netgiro Payment Gateway
+ * Netgiro Payment Form
+ * Provides a Netgíró Payment Form for WooCommerce.
  *
- * Provides a Netgíró Payment Gateway for WooCommerce.
- *
- * @class       WC_netgiro
- * @extends     WC_Payment_Gateway
- * @version     4.1.1
- * @package     WooCommerce-netgiro-plugin
+ * @class       Netgiro_Payment_Form
+ * @extends     Netgiro_Template
  */
 class Netgiro_Payment_Form extends Netgiro_Template {
 
@@ -61,7 +61,7 @@ class Netgiro_Payment_Form extends Netgiro_Template {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 		$plugin_data    = get_plugin_data( __FILE__ );
-		$plugin_version = $plugin_data['Version'];
+		$plugin_version = "4.3.0"; 
 
 		// Netgiro arguments.
 		$netgiro_args = array(
@@ -165,5 +165,4 @@ class Netgiro_Payment_Form extends Netgiro_Template {
 
 		return true;
 	}
-
 }

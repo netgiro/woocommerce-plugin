@@ -1,19 +1,18 @@
-<?php
+<?php 
 /**
  * Netgiro payment refund
  *
  * @package WooCommerce-netgiro-plugin
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
- * WC_netgiro Payment Gateway
+ * Netgiro Refund
+ * Provides a refund functionality for Netgíró Payment Gateway for WooCommerce. 
  *
- * Provides a Netgíró Payment Gateway for WooCommerce.
- *
- * @class       WC_netgiro
- * @extends     WC_Payment_Gateway
- * @version     4.1.1
- * @package     WooCommerce-netgiro-plugin
+ * @class       Netgiro_Refund
+ * @extends     Netgiro_Template
  */
 class Netgiro_Refund extends Netgiro_Template {
 
@@ -130,5 +129,4 @@ class Netgiro_Refund extends Netgiro_Template {
 		}
 		return $value;
 	}
-
 }

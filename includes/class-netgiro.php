@@ -1,19 +1,22 @@
-<?php /**
-	   * Netgiro class
-	   *
-	   * @package WooCommerce-netgiro-plugin
-	   */
+<?php 
+/**
+ * Netgiro payment gateway
+ *
+ * @package WooCommerce-netgiro-plugin
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 /**
- * WC_netgiro Payment Gateway
+ * Netgiro Payment Gateway
  * Provides a Netgíró Payment Gateway for WooCommerce.
  *
- * @class       WC_netgiro
+ * @class       Netgiro
  * @extends     WC_Payment_Gateway
  */
 class Netgiro extends WC_Payment_Gateway {
 
-
+	public $round_numbers = 'yes';
 	/**
 	 * Protected varible
 	 *
@@ -46,10 +49,10 @@ class Netgiro extends WC_Payment_Gateway {
 	 * Constructs a WC_netgiro instance.
 	 */
 	public function __construct() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-netgiro-admin.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-netgiro-refund.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-netgiro-payment-call.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-netgiro-payment-form.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-netgiro-admin.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-netgiro-refund.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-netgiro-payment-call.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-netgiro-payment-form.php';
 		$this->admin        = new Netgiro_Admin( $this );
 		$this->refund       = new Netgiro_Refund( $this );
 		$this->payment_call = new Netgiro_Payment_Call( $this );
@@ -81,8 +84,6 @@ class Netgiro extends WC_Payment_Gateway {
 			$this->redirect_page_id = sanitize_text_field( $this->settings['redirect_page_id'] );
 		}
 		$this->cancel_page_id = sanitize_text_field( $this->settings['cancel_page_id'] );
-
-		$this->round_numbers = 'yes';
 
 		add_action( 'woocommerce_receipt_' . $this->id, array( $this, 'receipt_page' ) );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( &$this, 'process_admin_options' ) );
@@ -175,11 +176,11 @@ class Netgiro extends WC_Payment_Gateway {
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 		$order          = wc_get_order( $order_id );
 		$transaction_id = $this->refund->get_transaction( $order );
-		$response = $this->refund->post_refund( $transaction_id, $amount, $order_id, $reason );
+		$response       = $this->refund->post_refund( $transaction_id, $amount, $order_id, $reason );
 
 		if ( ! $response['refunded'] ) {
 			$order->add_order_note( 'Refund not successful, reason : ' . $response['message'] );
-			throw new Exception( __( 'Refund not successful, reason: ', 'woocommerce' ) . $response['message'] );
+			throw new Exception( esc_html( __( 'Refund not successful, reason: ', 'woocommerce' ) ) . esc_html( $response['message'] ) );
 		} else {
 			$order->add_order_note( 'Refund successful ' . $response['message'] );
 			return true;
@@ -266,5 +267,4 @@ class Netgiro extends WC_Payment_Gateway {
 		}
 		return $available_gateways;
 	}
-
 }

@@ -2,12 +2,12 @@
 Contributors: netgiro
 Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocommerce
 Donate link: -
-Stable tag: 4.2.0
+Stable tag: 4.3.0
 Requires at least: 4.6
-Tested up to: 6.2.2
-Requires PHP: 7.1
+Tested up to: 6.4.3
+Requires PHP: 7.4
 WC requires at least: 4.6.0
-WC tested up to: 7.7.0
+WC tested up to: 8.5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,11 +19,11 @@ When you use our free WooCommerce plugin as a Netgíró provider **you can accep
 
 <a href="https://www.netgiro.is">Netgíró</a> helps businesses of all sizes increase their sales. We have been offering Icelandic consumers a solution for simple and secure payments since 2012. **The Icelandic market widely supports Netgíró online and offline, with thousands of consumers using it daily.**
 
-With Netgíró being a secure and convenient payment solution, we offer customers to **pay right away or pay an invoice at the beginning of a new month.** Spreading payments or taking a loan is also an option, whatever suits the customer. 
+With Netgíró being a secure and convenient payment solution, we offer customers to **pay right away or pay an invoice at the beginning of a new month.** Spreading payments or taking a loan is also an option, whatever suits the customer.
 
-Maximize your revenue by offering your customers the option of using Netgíró as a payment method. Netgíró offers a simple and convenient solution if customers wish to spread payments for larger purchases for up to 24 months (some restrictions may apply based on the total amount). They can use Netgíró as a payment method and spread the payments by themselves in the app or customer pages, even after they pay. 
+Maximize your revenue by offering your customers the option of using Netgíró as a payment method. Netgíró offers a simple and convenient solution if customers wish to spread payments for larger purchases for up to 24 months (some restrictions may apply based on the total amount). They can use Netgíró as a payment method and spread the payments by themselves in the app or customer pages, even after they pay.
 
-**Want to increase sales?** Make your customers aware that they can pay with Netgíró on your checkout pages. You’ll increase your number of customers and Netgíró takes the risk of any possible defaults. You always get paid in full, no matter what type of payment customers choose. 
+**Want to increase sales?** Make your customers aware that they can pay with Netgíró on your checkout pages. You’ll increase your number of customers and Netgíró takes the risk of any possible defaults. You always get paid in full, no matter what type of payment customers choose.
 
 **Join the network of 2,000 retailers** in Iceland who are using Netgíró as a payment method in their online and brick and mortar shops. Please note that this plugin is exclusive to Iceland, since Netgíró is currently not available in other markets.
 
@@ -60,6 +60,17 @@ We take your security and privacy seriously. Netgíró's Privacy Policy, which o
 
 == Changelog ==
 
+= 4.3.0 =
+* Added block supports
+* Fixed invalid headers
+* Changed default description text.
+* Updated coding standards to enhance code quality
+* Tested the plugin with WordPress version 6.4.3 and WooCommerce version 8.5.2 for compatibility
+* Updated the plugin to meet the latest WordPress and WooCommerce standards
+
+= 4.2.1 =
+* Fixed invalid headers
+
 = 4.2.0 =
 * Added refund function for improved user experience
 * Removed unnecessary code to optimize performance
@@ -85,4 +96,3 @@ We take your security and privacy seriously. Netgíró's Privacy Policy, which o
 
 = 3.5.7 =
 * Our Woocommerce plugins use the iFrame and POST integration
-
