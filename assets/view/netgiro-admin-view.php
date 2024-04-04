@@ -1,9 +1,9 @@
-<?php /**
-	   * Netgiro payment gateway view
-	   *
-	   * @package WooCommerce-netgiro-plugin
-	   */
-
+<?php 
+/**
+ * Netgiro payment gateway view
+ *
+ * @package WooCommerce-netgiro-plugin
+*/
 ?>
 <h3>Netgíró Payment Gateway</h3>
 <p>Verslaðu á netinu með Netgíró á einfaldan hátt.</p>
