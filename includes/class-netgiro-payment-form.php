@@ -61,7 +61,7 @@ class Netgiro_Payment_Form extends Netgiro_Template {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 		$plugin_data    = get_plugin_data( __FILE__ );
-		$plugin_version = "4.3.0"; 
+		$plugin_version = "4.3.1";
 
 		// Netgiro arguments.
 		$netgiro_args = array(

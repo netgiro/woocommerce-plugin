@@ -2,7 +2,7 @@
 Contributors: netgiro
 Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocommerce
 Donate link: -
-Stable tag: 4.3.0
+Stable tag: 4.3.1
 Requires at least: 4.6
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -59,6 +59,9 @@ Our plugin seamlessly integrates with Netgíró, a trusted and secure payment ga
 We take your security and privacy seriously. Netgíró's Privacy Policy, which outlines how they handle and protect user data, can be found here: <a href="https://www.netgiro.is/en/privacy-policy/">Netgíró Privacy Policy</a>. We recommend reviewing this policy to understand how Netgíró handles your customers' personal information.
 
 == Changelog ==
+
+= 4.3.1 =
+* Fixed invalid headers and Tested the plugin with WordPress version 6.5
 
 = 4.3.0 =
 * Added block supports
