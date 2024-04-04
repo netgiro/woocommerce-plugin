@@ -62,7 +62,7 @@ class Netgiro extends WC_Payment_Gateway {
 		$this->medthod_title      = 'Netgíró';
 		$this->method_description = 'Plugin for accepting Netgiro payments with Woocommerce web shop.';
 		$this->has_fields         = false;
-		$this->icon               = plugins_url( '/assets/images/logo_x25.png', dirname( __DIR__ ) . '/WooCommerce-netgiro-plugin.php' );
+		$this->icon               = plugins_url( '/assets/images/logo_x25_netgiro.png', dirname( __DIR__ ) . '/WooCommerce-netgiro-plugin.php' );
 
 		$this->supports = array(
 			'products',
