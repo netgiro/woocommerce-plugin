@@ -73,7 +73,7 @@ class Netgiro extends WC_Payment_Gateway {
 		$this->init_settings();
 
 		$this->payment_gateway_url     = 'yes' === $this->settings['test'] ? 'https://securepay.test.netgiro.is/' : 'https://securepay.netgiro.is/v1/';
-		$this->payment_gateway_api_url = 'yes' === $this->settings['test'] ? 'https://api.test.netgiro.is/v1' : 'https://api.netgiro.is/partner/';
+		$this->payment_gateway_api_url = 'yes' === $this->settings['test'] ? 'https://partner.test.netgiro.is/' : 'https://api.netgiro.is/partner/';
 
 		$this->title          = sanitize_text_field( $this->settings['title'] );
 		$this->description    = $this->settings['description'];
