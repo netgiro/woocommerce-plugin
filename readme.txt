@@ -1,64 +1,103 @@
-=== Netgíró Payment Gateway for Woocommerce ===
-Contributors: netgiro
-Tags: netgíró, netgiro, credit card, payment, gateway, split payments, woocommerce
+=== Netgíró Payment Gateway for WooCommerce ===
+Contributors: netgiro, smartmediais
+Tags: netgíró, netgiro, split payments, woocommerce
 Donate link: -
-Stable tag: 4.3.1
-Requires at least: 4.6
-Tested up to: 6.5
+Stable tag: 5.0.0
+Requires at least: 5.8
+Tested up to: 6.7
 Requires PHP: 7.4
-WC requires at least: 4.6.0
-WC tested up to: 8.5.2
+WC requires at least: 7.0.0
+WC tested up to: 9.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Install our free Woocommerce plugin, and you can easily offer your customers the option of using Netgíró’s quick and secure payment solution.
+Offer your customers Netgíró’s quick, secure, and streamlined payment solution directly in your WooCommerce store.
 
 == Description ==
 
-When you use our free WooCommerce plugin as a Netgíró provider **you can accept instant payments in your online stores.**
+Netgíró is a secure and widely used Icelandic payment solution, enabling merchants to accept instant payments, spread payments, or provide invoice options. Increase your sales by offering customers a convenient way to pay online or via mobile. Netgíró assumes all risks of defaults, guaranteeing full merchant payout.
 
-<a href="https://www.netgiro.is">Netgíró</a> helps businesses of all sizes increase their sales. We have been offering Icelandic consumers a solution for simple and secure payments since 2012. **The Icelandic market widely supports Netgíró online and offline, with thousands of consumers using it daily.**
+**Key Benefits:**
 
-With Netgíró being a secure and convenient payment solution, we offer customers to **pay right away or pay an invoice at the beginning of a new month.** Spreading payments or taking a loan is also an option, whatever suits the customer.
+* Instant and secure payments
+* Manual capture workflows aligned with WooCommerce standards
+* Payment splitting and flexible invoice payments
+* Enhanced checkout flow for better customer experience
 
-Maximize your revenue by offering your customers the option of using Netgíró as a payment method. Netgíró offers a simple and convenient solution if customers wish to spread payments for larger purchases for up to 24 months (some restrictions may apply based on the total amount). They can use Netgíró as a payment method and spread the payments by themselves in the app or customer pages, even after they pay.
-
-**Want to increase sales?** Make your customers aware that they can pay with Netgíró on your checkout pages. You’ll increase your number of customers and Netgíró takes the risk of any possible defaults. You always get paid in full, no matter what type of payment customers choose.
-
-**Join the network of 2,000 retailers** in Iceland who are using Netgíró as a payment method in their online and brick and mortar shops. Please note that this plugin is exclusive to Iceland, since Netgíró is currently not available in other markets.
-
-We wish you many successful sales!
+**Note:** Netgíró is currently exclusive to the Icelandic market.
 
 == Installation ==
 
-When you install our <b>free Woocommerce plugin</b> for Wordpress, you can easily offer your customers the option of using Netgíró’s quick and secure payment solution, whether they are using it on desktop or mobile. We use the iFrame and POST integration and the process of installation is rather simple:
-1. Upload the Netgíró WooCommerce plugin through the Wordpress plugin manager.
-2. Configure the plugin with your Application ID and Secret key from your account on partner.netgiro.is
+1. Upload the Netgíró WooCommerce plugin via WordPress plugin manager.
+2. Configure using your Application ID and Secret Key from partner.netgiro.is.
 
 == Upgrade Notice ==
-There is no upgrade notice at the time.
+
+= 5.0 =
+Critical update improving plugin structure, security, workflow consistency, and WooCommerce compatibility. All merchants strongly advised to upgrade.
 
 == Frequently Asked Questions ==
 
 = What are the benefits of offering Netgíró? =
-
-By offering Netgíró as a payment method, you can increase the number of customers who can pay just with their mobile phone or online checkout. Since Netgíró increases consumer safety and simplifies their purchasing processes, purchases become easier, more regular and paid on time. That will increase sales and interest in your business.
+Increase sales and customer convenience with secure, instant payments, and flexible payment terms.
 
 = How can my company offer Netgíró? =
-
-Register on our page: <a href="https://partner.netgiro.is/Account/Register">https://partner.netgiro.is/Account/Register</a>. A sales manager will then contact you and, if needed, arrange an additional meeting to help you with the details.
+Register at: [https://partner.netgiro.is/Account/Register](https://partner.netgiro.is/Account/Register).
 
 == Screenshots ==
 
-1. Login page for Netgíró checkout checkout_login.png
-2. Actual Netgíró checkout page checkout_page1.png
+1. Netgíró login screen (checkout_login.png)
+2. Netgíró checkout page (checkout_page1.png)
 
 == Third-Party Service Integration ==
 
-Our plugin seamlessly integrates with Netgíró, a trusted and secure payment gateway, to facilitate smooth and secure payment transactions. By connecting to netgiro.is, we ensure that your customers can make payments with confidence, while you receive real-time updates on the payment status.
-We take your security and privacy seriously. Netgíró's Privacy Policy, which outlines how they handle and protect user data, can be found here: <a href="https://www.netgiro.is/en/privacy-policy/">Netgíró Privacy Policy</a>. We recommend reviewing this policy to understand how Netgíró handles your customers' personal information.
+Integrates securely with Netgíró's payment gateway ([Privacy Policy](https://www.netgiro.is/en/privacy-policy/)).
 
 == Changelog ==
+
+= 5.0 =
+* Refactored Plugin Structure
+    * Removed Netgiro_Template base class.
+    * Decoupled classes like Netgiro_Payment_Form, Netgiro_Payment_Call, Netgiro_Refund from template inheritance.
+
+* Manual Capture Workflow Integration
+    * Merchants can now select ConfirmationType=2 for manual captures, harmonizing order processing across multiple gateways.
+
+* Payment Confirmation Enhancements
+    * Type 0 payments no longer call PaymentConfirmedURL incorrectly.
+    * Added Type 2 manual capture workflow, aligning with Straumur and Verifone payment workflows.
+
+* Send cart items
+    * Now you can choose if you send cart items to Netgiro og simply the cart total amount
+
+* Admin & Settings Updates
+    * Introduced ConfirmationType setting for choosing between immediate or manual capture.
+    * Standardized usage of WooCommerce APIs like wc_get_order() and generate_settings_html().
+    * Aligned file naming and structure to WooCommerce standards.
+
+* Improved Debug Logging
+    * Transitioned to wc_get_logger(), providing clearer logs under WooCommerce's "Status → Logs" section.
+
+* Updated URLs for Test & Production
+    * Corrected endpoints for accurate testing and production environments.
+
+* Netgiro_Refund Improvements
+    * Included $reason parameter to prevent warnings.
+    * Enhanced JSON response handling for clearer, consistent feedback.
+
+* Security & Code Compliance
+    * Implemented secure, signature-based callbacks.
+    * Sanitized inputs with esc_attr(), esc_html(), wp_unslash().
+    * Renamed variables/files to comply with coding standards.
+
+= 4.4.1 =
+* Minor compatibility improvements and maintenance.
+
+= 4.3.1 =
+* Fixed invalid headers and verified compatibility with WordPress 6.5.
+
+= 4.3.0 =
+* Block support added, code quality improved.
 
 = 4.3.1 =
 * Fixed invalid headers and Tested the plugin with WordPress version 6.5

@@ -1,92 +1,165 @@
-<?php 
+<?php
+
 /**
- * Plugin Name: Netgíró Payment gateway for Woocommerce
- * Plugin URI: http://www.netgiro.is
- * Description: Netgíró Payment gateway for Woocommerce
- * Version: 4.3.1
+ * Plugin Name: Netgíró Payment Gateway for WooCommerce
+ * Plugin URI: https://www.netgiro.is
+ * Description: Official Netgíró Payment Gateway integration for WooCommerce.
+ * Version: 5.0.0
  * Author: Netgíró
- * Author URI: http://www.netgiro.is
+ * Text Domain: netgiro-payment-gateway-for-woocommerce
+ * Domain Path: /languages
+ * Author URI: https://www.netgiro.is
+ * Requires Plugins: woocommerce
+ * WC requires at least: 8.1
+ * WC tested up to: 9.7
+ * WC Payment Gateway: yes
+ * WC Blocks Support: yes
+ * WC-HPOS: true
+ * Requires PHP: 7.4
  *
- * @package WooCommerce-netgiro-plugin
+ * License:     GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
  */
 
 defined( 'ABSPATH' ) || exit;
 
+define( 'NETGIRO_PLUGIN_VERSION', '5.0.0' );
+define( 'NETGIRO_PLUGIN_FILE', __FILE__ );
+define( 'NETGIRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'NETGIRO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
+
 /**
- * Initialize the Netgiro payment gateway.
+ * Show an admin notice if WooCommerce is not active.
  */
-function woocommerce_netgiro_init() {
-	if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
+function netgiro_admin_notice_woocommerce_missing(): void {
+	if ( ! current_user_can( 'activate_plugins' ) ) {
+		return;
+	}
+	echo '<div class="error"><p><strong>';
+	echo esc_html__(
+		'Netgíró Payment Gateway for WooCommerce requires WooCommerce to be installed and active.',
+		'netgiro-payment-gateway-for-woocommerce'
+	);
+	echo '</strong></p></div>';
+}
+
+/**
+ * Show an admin notice if currency is not ISK.
+ */
+function netgiro_admin_notice_currency_invalid(): void {
+	if ( ! current_user_can( 'activate_plugins' ) ) {
+		return;
+	}
+	echo '<div class="error"><p><strong>';
+	echo esc_html__(
+		'Netgíró Payment Gateway requires WooCommerce currency to be set to ISK.',
+		'netgiro-payment-gateway-for-woocommerce'
+	);
+	echo '</strong></p></div>';
+}
+
+/**
+ * Declare compatibility for HPOS and Cart/Checkout Blocks.
+ */
+add_action(
+	'before_woocommerce_init',
+	function (): void {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+				'custom_order_tables',
+				NETGIRO_PLUGIN_FILE,
+				true
+			);
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+				'cart_checkout_blocks',
+				NETGIRO_PLUGIN_FILE,
+				true
+			);
+		}
+	},
+	10
+);
+
+/**
+ * Initialize the Netgíró plugin.
+ */
+function netgiro_payments_init(): void {
+	// Check if WooCommerce is active
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		add_action( 'admin_notices', 'netgiro_admin_notice_woocommerce_missing' );
 		return;
 	}
 
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-netgiro-template.php';
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-netgiro.php';
-
-	/**
-	 * Add the Netgiro gateway to WooCommerce.
-	 *
-	 * @param array $methods Existing payment methods.
-	 * @return array Filtered payment methods.
-	 */
-	function woocommerce_add_netgiro_gateway( $methods ) {
-		$methods[] = 'Netgiro';
-		return $methods;
+	// Check if currency is ISK
+	if ( get_woocommerce_currency() !== 'ISK' ) {
+		add_action( 'admin_notices', 'netgiro_admin_notice_currency_invalid' );
+		return;
 	}
 
-	add_filter( 'woocommerce_payment_gateways', 'woocommerce_add_netgiro_gateway' );
+	// Load text domain
+	load_plugin_textdomain(
+		'netgiro',
+		false,
+		basename( __DIR__ ) . '/languages'
+	);
 
-	/**
-	 * Enqueue Netgiro script.
-	 * disabled since not in use
-	 */
-	function netgiro_enqueue_scripts() {
-		$script_path = plugins_url( 'assets/js/script.js', __FILE__ );
-		wp_enqueue_script( 'netgiro-script', $script_path, array(), '1.0.0', true );
-	}
-	add_action( 'wp_enqueue_scripts', 'netgiro_enqueue_scripts' );
+	// Include required files
+	require_once NETGIRO_PLUGIN_PATH . 'includes/class-netgiro-settings.php';
+	require_once NETGIRO_PLUGIN_PATH . 'includes/class-netgiro-api.php';
+	require_once NETGIRO_PLUGIN_PATH . 'includes/class-netgiro-payment-form.php';
+	require_once NETGIRO_PLUGIN_PATH . 'includes/class-netgiro-gateway.php';
+	require_once NETGIRO_PLUGIN_PATH . 'includes/class-netgiro-block-support.php';
+	require_once NETGIRO_PLUGIN_PATH . 'includes/class-netgiro-actions.php';
 
-	/**
-	 * Render view files
-	 *
-	 * @param string $view_name Name of view file.
-	 * @param array  $var Array with variables.
-	 */
-// phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.varFound,Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
-	function render_view( $view_name, $var = array() ) {
-		require_once plugin_dir_path( ( __FILE__ ) ) . 'assets/view/' . $view_name . '.php';
+	// Register block-based checkout integration if available.
+	if ( class_exists( 'Netgiro_Block_Support' ) ) {
+		Netgiro_Block_Support::init();
 	}
+
+	add_filter( 'woocommerce_payment_gateways', 'netgiro_add_gateway_method' );
+	// Instantiate the Actions class to register its hooks
+	if ( class_exists( 'Netgiro_Actions' ) ) {
+		new Netgiro_Actions();
+	}
+	add_action( 'wp_enqueue_scripts', 'netgiro_enqueue_block_settings' );
 }
 
-add_action( 'plugins_loaded', 'woocommerce_netgiro_init', 0 );
-
+/**
+ * Hook to initialize plugin after all plugins are loaded,
+ * ensuring WooCommerce is ready.
+ */
+add_action( 'plugins_loaded', 'netgiro_payments_init' );
 
 /**
- * Custom function to declare compatibility with cart_checkout_blocks feature
+ * Add Netgíró gateway to WooCommerce Payment Gateways.
+ *
+ * @param array $gateways
+ * @return array
  */
-function declare_cart_checkout_blocks_compatibility() {
-	if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
-	}
+function netgiro_add_gateway_method( array $gateways ): array {
+	$gateways[] = 'Netgiro_Gateway';
+	return $gateways;
 }
 
-add_action( 'before_woocommerce_init', 'declare_cart_checkout_blocks_compatibility' );
 
+function netgiro_enqueue_block_settings(): void {
+	if ( class_exists( 'WC_Payment_Gateways' ) && function_exists( 'wp_add_inline_script' ) ) {
+		$gateways = WC()->payment_gateways->get_available_payment_gateways();
+		if ( isset( $gateways['netgiro'] ) ) {
+			$gateway = $gateways['netgiro'];
+			$data    = array(
+				'title'       => $gateway->title,
+				'description' => $gateway->description,
+				'supports'    => $gateway->supports,
+			);
 
-
-add_action( 'woocommerce_blocks_loaded', 'netgiro_woocommerce_blocks_support' );
-/**
- * Enable support for WooCommerce blocks.
- */
-function netgiro_woocommerce_blocks_support() {
-	if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
-
-		require_once plugin_dir_path( __FILE__ ) . 'includes/class-netgiro-payment-method-registration.php';
-		add_action(
-			'woocommerce_blocks_payment_method_type_registration',
-			function ( Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
-				$payment_method_registry->register( new Netgiro_Payment_Method_Registration() );
-			}
-		);
+			wp_add_inline_script(
+				'netgiro-block-checkout',
+				'window.wc.wcSettings.setSetting("netgiro_data", ' . wp_json_encode( $data ) . ');',
+				'before'
+			);
+		}
 	}
 }
