@@ -1,0 +1,305 @@
+# Copyright (C) 2025 Netgíró
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Netgíró Payment Gateway for WooCommerce 5.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/netgiro-payment-gateway-for-woocommerce\n"
+"Last-Translator: Smartmedia <smartmedia@smartmedia.is>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-04-08T10:12:54+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: netgiro-payment-gateway-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: index.php
+msgid "Netgíró Payment Gateway for WooCommerce"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: index.php
+msgid "https://www.netgiro.is"
+msgstr ""
+
+#. Description of the plugin
+#: index.php
+msgid "Official Netgíró Payment Gateway integration for WooCommerce."
+msgstr ""
+
+#. Author of the plugin
+#: index.php
+#: includes/class-netgiro-block-support.php:95
+#: includes/class-netgiro-gateway.php:68
+#: includes/class-netgiro-settings.php:40
+msgid "Netgíró"
+msgstr ""
+
+#: includes/class-netgiro-actions.php:69
+msgid "Check Netgíró status"
+msgstr ""
+
+#: includes/class-netgiro-actions.php:87
+msgid "No Netgíró transaction ID found for this order."
+msgstr ""
+
+#: includes/class-netgiro-actions.php:91
+msgid "Order was not paid using Netgíró. Status check aborted."
+msgstr ""
+
+#: includes/class-netgiro-actions.php:98
+msgid "Netgíró gateway instance not found or not active."
+msgstr ""
+
+#: includes/class-netgiro-actions.php:111
+msgid "Netgíró API credentials (Secret Key or Application ID) are not configured in WooCommerce settings."
+msgstr ""
+
+#: includes/class-netgiro-actions.php:116
+msgid "Netgíró API class not found. Plugin files may be missing or corrupted."
+msgstr ""
+
+#. translators: %1$s: Error message from API, %2$s: Netgiro Transaction ID.
+#: includes/class-netgiro-actions.php:130
+msgid "Netgíró status check failed: %1$s (Transaction ID: %2$s)"
+msgstr ""
+
+#: includes/class-netgiro-actions.php:138
+msgid "Status not provided"
+msgstr ""
+
+#: includes/class-netgiro-actions.php:140
+msgid "Refundable"
+msgstr ""
+
+#: includes/class-netgiro-actions.php:140
+msgid "Not Refundable"
+msgstr ""
+
+#. Translators: %s is the formatted settlement date.
+#: includes/class-netgiro-actions.php:142
+msgid "Settlement expected on: %s"
+msgstr ""
+
+#. Translators: %s is the formatted settlement date.
+#: includes/class-netgiro-actions.php:142
+msgid "Settlement date not available"
+msgstr ""
+
+#. translators: %1$s: Netgiro Transaction ID, %2$s: Transaction status, %3$s: Refundable status, %4$s: Expected settlement date.
+#: includes/class-netgiro-actions.php:146
+msgid "Netgíró status updated: Transaction ID: %1$s. Status: %2$s. Refundable: %3$s. %4$s"
+msgstr ""
+
+#: includes/class-netgiro-api.php:345
+msgid "Invalid response format from API server."
+msgstr ""
+
+#: includes/class-netgiro-block-support.php:104
+msgid "Pay with Netgíró."
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:69
+msgid "Accept payments via Netgíró."
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:179
+msgid "Netgíró signature mismatch."
+msgstr ""
+
+#. Translators: %1$s is the transaction ID, %2$s is additional transaction information.
+#: includes/class-netgiro-gateway.php:207
+msgid "Netgíró payment authorized. Please confirm this order by setting its status to Processing or Complete. Transaction ID: %1$s, %2$s"
+msgstr ""
+
+#. Translators: %1$s is the transaction ID, %2$s is amount
+#: includes/class-netgiro-gateway.php:220
+msgid "Netgíró payment authorized and has been confirmed. Transaction ID: %1$s, Amount: %2$s"
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:282
+msgid "Could not attempt Netgíró confirmation: No transaction ID found."
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:293
+msgid "Netgíró payment confirmed successfully."
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:300
+msgid "Unknown error"
+msgstr ""
+
+#. Translators: %s error reason
+#: includes/class-netgiro-gateway.php:302
+msgid "Netgíró manual confirmation failed. Reason: %s"
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:324
+msgid "Order not found."
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:329
+msgid "Cannot refund: Missing Netgíró transaction ID."
+msgstr ""
+
+#. Translators: %s is the current payment state from Netgíró.
+#: includes/class-netgiro-gateway.php:338
+msgid "Cannot refund: Payment is not in an authorized or confirmed state (Current state: %s)."
+msgstr ""
+
+#. Translators: %1$s is the refunded amount.
+#: includes/class-netgiro-gateway.php:349
+msgid "Netgíró refund successful. Amount: %1$s"
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:359
+msgid "Unknown error during refund."
+msgstr ""
+
+#. Translators: %s is the refunded failure reason.
+#: includes/class-netgiro-gateway.php:362
+msgid "Netgíró refund failed. Reason: %s"
+msgstr ""
+
+#: includes/class-netgiro-payment-form.php:108
+msgid "Invalid order."
+msgstr ""
+
+#. translators: %1$s is the order ID, %2$s is the shop name.
+#: includes/class-netgiro-payment-form.php:157
+msgid "Order #%1$s from %2$s"
+msgstr ""
+
+#: includes/class-netgiro-payment-form.php:187
+msgid "Please click the button below to proceed to Netgíró."
+msgstr ""
+
+#: includes/class-netgiro-payment-form.php:188
+msgid "Proceed to Netgíró"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:31
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:33
+msgid "Enable Netgíró Payment Gateway"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:37
+msgid "Title"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:39
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:44
+msgid "Description"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:46
+msgid "This controls the description which the user sees during checkout."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:47
+msgid "Pay securely using Netgíró. Choose instant payment, split payments, or invoice."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:51
+msgid "API Credentials"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:53
+msgid "Enter your Netgíró API details obtained from partner.netgiro.is."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:56
+msgid "Test Mode"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:58
+msgid "Enable Netgíró Test Environment"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:59
+msgid "Use the Netgíró sandbox environment for testing. Requires separate test credentials."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:64
+msgid "Application ID"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:66
+msgid "Enter your Netgíró Application ID."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:71
+msgid "Secret Key"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:73
+msgid "Enter your Netgíró Secret Key."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:78
+msgid "Payment Options"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:82
+msgid "Payment Confirmation Type"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:84
+msgid "Choose how payments are confirmed after authorization. Automatic confirms immediately. Manual requires changing order status from On Hold to Processing/Completed."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:87
+msgid "Automatic Confirmation (Capture immediately)"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:88
+msgid "Manual Confirmation (Authorize now, Capture later)"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:93
+msgid "Send Order Item Details"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:95
+msgid "Send individual item details (product name, price, quantity) to Netgíró."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:96
+msgid "Recommended. If unchecked, only the order total and a generic description will be sent."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:101
+msgid "Page Redirects"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:105
+msgid "Cancel Page"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:107
+msgid "Default (Checkout Page)"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:108
+msgid "Page where customers are redirected if they cancel the payment at Netgíró. If unset, defaults to the checkout page."
+msgstr ""
+
+#: includes/class-netgiro-settings.php:125
+msgid "Select a page"
+msgstr ""
+
+#: index.php:41
+msgid "Netgíró Payment Gateway for WooCommerce requires WooCommerce to be installed and active."
+msgstr ""
+
+#: index.php:56
+msgid "Netgíró Payment Gateway requires WooCommerce currency to be set to ISK."
+msgstr ""
