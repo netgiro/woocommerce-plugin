@@ -8,7 +8,7 @@
  * Refund success is determined by a 200 OK HTTP status.
  *
  * @package Netgiro\Payments
- * @version 5.0.0
+ * @version 5.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -376,7 +376,7 @@ class Netgiro_API {
 
 		if ( ! $is_http_success || ! $is_api_success ) {
 			$error_message = $data['Message'] ?? $data['message'] ?? 'API request failed.';
-			if ( ! $is_http_success && ( $error_message === 'API request failed.' ) ) {
+			if ( ! $is_http_success && ( 'API request failed.' === $error_message ) ) {
 				$http_message  = wp_remote_retrieve_response_message( $response );
 				$error_message = empty( $http_message ) ? "HTTP $status_code error." : $http_message;
 			}

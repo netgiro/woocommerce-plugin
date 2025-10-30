@@ -2,12 +2,12 @@
 Contributors: netgiro, smartmediais
 Tags: netgíró, netgiro, split payments, woocommerce
 Donate link: -
-Stable tag: 5.0.0
+Stable tag: 5.1.0
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
-WC requires at least: 7.0.0
-WC tested up to: 9.7.0
+WC requires at least: 8.1.0
+WC tested up to: 10.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,7 +54,16 @@ Register at: [https://partner.netgiro.is/Account/Register](https://partner.netgi
 Integrates securely with Netgíró's payment gateway ([Privacy Policy](https://www.netgiro.is/en/privacy-policy/)).
 
 == Changelog ==
-
+= 5.1 =
+* Payment Confirmation Enhancements
+    * Update default ConfirmationType from 0 to 1 in settings
+    * Add Server Callback option to ConfirmationType dropdown
+    * Server-to-server callback validation before payment confirmation
+* All three confirmation types now supported:
+    * Type 0: Automatic (immediate confirmation)
+    * Type 1: Server Callback (recommended - server validation)
+    * Type 2: Manual (authorize now, capture later)
+    
 = 5.0 =
 * Refactored Plugin Structure
     * Removed Netgiro_Template base class.

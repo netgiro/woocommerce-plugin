@@ -6,7 +6,7 @@
  * Generates a payment form that auto-submits customers to Netgíró checkout.
  *
  * @package Netgiro\Payments
- * @version 5.0.0
+ * @version 5.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -118,7 +118,8 @@ class Netgiro_Payment_Form {
 		$cancel_url = ( $this->gateway->cancel_page_id ) ?
 			get_permalink( (int) $this->gateway->cancel_page_id ) : home_url( '/' );
 
-		$success_url = add_query_arg( 'wc-api', 'WC_netgiro', home_url( '/' ) );
+		$success_url  = add_query_arg( 'wc-api', 'WC_netgiro', home_url( '/' ) );
+		$callback_url = add_query_arg( 'wc-api', 'WC_netgiro_callback', home_url( '/' ) );
 
 		$total_amount = (int) round( $order->get_total() );
 
@@ -136,6 +137,11 @@ class Netgiro_Payment_Form {
 			'PrefixUrlParameters'  => 'true',
 			'ClientInfo'           => 'WooCommerce 5.0.0',
 		);
+
+		// Add PaymentConfirmedURL for server callback validation (ConfirmationType = 1)
+		if ( '1' === $confirmation_type ) {
+			$netgiro_args['PaymentConfirmedURL'] = $callback_url;
+		}
 
 		$items = array();
 		if ( $send_items ) {

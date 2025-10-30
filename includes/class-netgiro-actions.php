@@ -5,7 +5,7 @@
  * Adds an admin action to check transaction status via the Netgíró API.
  *
  * @package Netgiro\Payments
- * @version 5.0.0
+ * @version 5.1.0
  */
 
 defined( 'ABSPATH' ) || exit;

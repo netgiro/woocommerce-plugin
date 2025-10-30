@@ -7,7 +7,7 @@
  * displayed in the WooCommerce settings area.
  *
  * @package Netgiro\Payments
- * @version 5.0.0
+ * @version 5.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -81,10 +81,11 @@ class Netgiro_Settings {
 			'confirmation_type'       => array(
 				'title'       => __( 'Payment Confirmation Type', 'netgiro-payment-gateway-for-woocommerce' ),
 				'type'        => 'select',
-				'description' => __( 'Choose how payments are confirmed after authorization. Automatic confirms immediately. Manual requires changing order status from On Hold to Processing/Completed.', 'netgiro-payment-gateway-for-woocommerce' ),
-				'default'     => '0',
+				'description' => __( 'Choose how payments are confirmed after authorization. Server Callback (recommended): Netgíró validates with your server before confirming. Automatic: Confirms immediately. Manual: Requires changing order status from On Hold to Processing/Completed.', 'netgiro-payment-gateway-for-woocommerce' ),
+				'default'     => '1',
 				'options'     => array(
 					'0' => __( 'Automatic Confirmation (Capture immediately)', 'netgiro-payment-gateway-for-woocommerce' ),
+					'1' => __( 'Server Callback (Recommended - Server-side validation)', 'netgiro-payment-gateway-for-woocommerce' ),
 					'2' => __( 'Manual Confirmation (Authorize now, Capture later)', 'netgiro-payment-gateway-for-woocommerce' ),
 				),
 				'desc_tip'    => true,
@@ -122,7 +123,7 @@ class Netgiro_Settings {
 	 */
 	protected static function get_pages_list( string $default_text = '' ): array {
 		$pages_list   = get_pages( array( 'post_status' => 'publish' ) );
-		$default_text = $default_text ?: __( 'Select a page', 'netgiro-payment-gateway-for-woocommerce' );
+		$default_text = $default_text ? $default_text : __( 'Select a page', 'netgiro-payment-gateway-for-woocommerce' );
 
 		$options = array( '' => $default_text );
 

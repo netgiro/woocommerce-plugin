@@ -7,7 +7,7 @@
  * Registers the payment method type and provides necessary data to the frontend script.
  *
  * @package Netgiro\Payments
- * @version 5.0.0
+ * @version 5.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -137,6 +137,6 @@ class Netgiro_Block_Support extends AbstractPaymentMethodType {
 	 * Here we align with the Netgíró Gateway settings or your own logic.
 	 */
 	public function is_active(): bool {
-		return isset( $this->settings['enabled'] ) && $this->settings['enabled'] === 'yes';
+		return isset( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
 	}
 }
