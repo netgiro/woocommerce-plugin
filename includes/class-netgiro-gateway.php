@@ -4,7 +4,7 @@
  * Netgíró WooCommerce Payment Gateway
  *
  * @package Netgiro\Payments
- * @version 5.1.0
+ * @version 5.1.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -233,7 +233,7 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 		}
 
 		// Check if callback already processed (idempotency)
-		$callback_validated = get_post_meta( $order_id, self::META_KEY_CALLBACK_VALIDATED, true );
+		$callback_validated = $order->get_meta( self::META_KEY_CALLBACK_VALIDATED, true );
 		if ( $callback_validated ) {
 			$logger->info( "Callback: Order {$order_id} already validated. Returning OK.", array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
 			status_header( 200 );
@@ -266,8 +266,8 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 				)
 			);
 			$order->set_transaction_id( $transaction_id );
+			$order->update_meta_data( self::META_KEY_NETGIRO_STATUS, self::FLAG_CANCELLED );
 			$order->save();
-			update_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, self::FLAG_CANCELLED );
 
 			// Return error so Netgíró knows payment was cancelled
 			status_header( 400 );
@@ -288,6 +288,30 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 			exit;
 		}
 
+		// CRITICAL: Send HTTP 200 response IMMEDIATELY to prevent Netgíró timeout.
+		// Netgíró has a short timeout (~5-10 seconds) and will cancel the transaction
+		// if it doesn't receive "OK" in time. We send the response now, before any
+		// heavy database operations (payment_complete, emails, etc.).
+		ignore_user_abort( true ); // Continue processing even if connection closes.
+		status_header( 200 );
+		header( 'Content-Type: text/plain' );
+		header( 'Connection: close' );
+		header( 'Content-Length: 2' );
+		echo 'OK';
+
+		// Flush all output buffers to send response to Netgíró immediately.
+		if ( ob_get_level() > 0 ) {
+			ob_end_flush();
+		}
+		flush();
+
+		// Close session to prevent blocking other requests.
+		if ( session_status() === PHP_SESSION_ACTIVE ) {
+			session_write_close();
+		}
+
+		$logger->info( "Callback: HTTP 200 sent to Netgíró for order {$order_id}. Continuing with order processing.", array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
+
 		// Proceed with payment completion (status 1 or 2 are both valid)
 		// Set transaction ID
 		$order->set_transaction_id( $transaction_id );
@@ -305,17 +329,17 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 		);
 
 		// Mark callback as validated and set Netgíró status
-		update_post_meta( $order_id, self::META_KEY_CALLBACK_VALIDATED, time() );
-		update_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, self::FLAG_CONFIRMED );
+		$order->update_meta_data( self::META_KEY_CALLBACK_VALIDATED, time() );
+		$order->update_meta_data( self::META_KEY_NETGIRO_STATUS, self::FLAG_CONFIRMED );
+		$order->save();
 
 		$logger->info(
 			sprintf( 'Callback: Order %d payment complete, Netgíró status set to %s.', $order_id, self::FLAG_CONFIRMED ),
 			array( 'source' => 'netgiro-payment-gateway-for-woocommerce' )
 		);
 
-		// Respond with OK so Netgíró proceeds with customer redirect
-		status_header( 200 );
-		echo 'OK';
+		// HTTP 200 response was already sent earlier (before heavy operations).
+		// Exit to prevent any further output.
 		exit;
 	}
 
@@ -401,7 +425,8 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 					$transaction_id
 				)
 			);
-			update_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, self::FLAG_CANCELLED );
+			$order->update_meta_data( self::META_KEY_NETGIRO_STATUS, self::FLAG_CANCELLED );
+			$order->save();
 
 			$cancel_url = $this->cancel_page_id ? get_permalink( (int) $this->cancel_page_id ) : wc_get_checkout_url();
 
@@ -423,7 +448,7 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 
 		// Handle Server Callback mode (ConfirmationType=1)
 		if ( '1' === $confirmation_type ) {
-			$callback_validated = get_post_meta( $order_id, self::META_KEY_CALLBACK_VALIDATED, true );
+			$callback_validated = $order->get_meta( self::META_KEY_CALLBACK_VALIDATED, true );
 
 			if ( $callback_validated ) {
 				// Callback already processed this order successfully
@@ -470,7 +495,8 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 				)
 			);
 
-			update_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, self::FLAG_AUTHORIZED );
+			$order->update_meta_data( self::META_KEY_NETGIRO_STATUS, self::FLAG_AUTHORIZED );
+			$order->save();
 			$logger->info( sprintf( 'Order %d set to on-hold, Netgíró status set to %s.', $order_id, self::FLAG_AUTHORIZED ), array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
 		} else {
 			$order->payment_complete( $transaction_id );
@@ -482,7 +508,8 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 					wc_price( floatval( $total_amount ) )
 				)
 			);
-			update_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, self::FLAG_CONFIRMED );
+			$order->update_meta_data( self::META_KEY_NETGIRO_STATUS, self::FLAG_CONFIRMED );
+			$order->save();
 			$logger->info( sprintf( 'Order %d payment complete, Netgíró status set to %s.', $order_id, self::FLAG_CONFIRMED ), array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
 		}
 
@@ -514,7 +541,7 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 			return;
 		}
 
-		$netgiro_status = get_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, true );
+		$netgiro_status = $order->get_meta( self::META_KEY_NETGIRO_STATUS, true );
 
 		$logger->info( sprintf( 'Status change detected for Order %d (on-hold to %s). Current Netgíró status: %s.', $order_id, $order->get_status(), $netgiro_status ? $netgiro_status : 'Not Set' ), array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
 
@@ -552,7 +579,8 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 
 			$note = sprintf( __( 'Netgíró payment confirmed successfully.', 'netgiro-payment-gateway-for-woocommerce' ), $transaction_id );
 			$order->add_order_note( $note );
-			update_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, self::FLAG_CONFIRMED );
+			$order->update_meta_data( self::META_KEY_NETGIRO_STATUS, self::FLAG_CONFIRMED );
+			$order->save();
 
 			$logger->info( sprintf( 'Order %d: %s. Netgíró status updated to %s.', $order_id, $note, self::FLAG_CONFIRMED ), array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
 			return true;
@@ -589,7 +617,7 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 			return new WP_Error( 'netgiro_refund_failed', __( 'Cannot refund: Missing Netgíró transaction ID.', 'netgiro-payment-gateway-for-woocommerce' ) );
 		}
 
-		$netgiro_status = get_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, true );
+		$netgiro_status = $order->get_meta( self::META_KEY_NETGIRO_STATUS, true );
 
 		$logger->info( sprintf( 'Attempting refund for Order %d (Amount: %s). Current Netgíró status: %s.', $order_id, $amount, $netgiro_status ? $netgiro_status : 'Not Set' ), array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
 
@@ -611,7 +639,8 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 			);
 			$order->add_order_note( $note );
 
-			update_post_meta( $order_id, self::META_KEY_NETGIRO_STATUS, self::FLAG_REFUNDED );
+			$order->update_meta_data( self::META_KEY_NETGIRO_STATUS, self::FLAG_REFUNDED );
+			$order->save();
 
 			$logger->info( sprintf( 'Order %d: %s. Netgíró status updated to %s.', $order_id, $note, self::FLAG_REFUNDED ), array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
 			return true;
