@@ -4,27 +4,27 @@
  * Plugin Name: Netgíró Payment Gateway for WooCommerce
  * Plugin URI: https://www.netgiro.is
  * Description: Official Netgíró Payment Gateway integration for WooCommerce.
- * Version: 5.1.0
+ * Version: 5.1.1
  * Author: Netgíró
  * Text Domain: netgiro-payment-gateway-for-woocommerce
  * Domain Path: /languages
  * Author URI: https://www.netgiro.is
  * Requires Plugins: woocommerce
- * WC requires at least: 8.1.0
- * WC tested up to: 10.3.3
+ * WC requires at least: 8.5.0
+ * WC tested up to: 10.4.3
  * WC Payment Gateway: yes
  * WC Blocks Support: yes
  * WC-HPOS: true
  * Requires PHP: 7.4
  *
- * License:     GPL v2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * License:     GPLv3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'NETGIRO_PLUGIN_VERSION', '5.1.0' );
+define( 'NETGIRO_PLUGIN_VERSION', '5.1.1' );
 define( 'NETGIRO_PLUGIN_FILE', __FILE__ );
 define( 'NETGIRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'NETGIRO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

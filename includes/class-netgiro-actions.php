@@ -37,35 +37,17 @@ class Netgiro_Actions {
 	public function add_check_status_order_action( array $actions ): array {
 		global $theorder;
 
-		$show_action = false;
-
-		if ( $theorder instanceof WC_Order && $theorder->get_payment_method() === 'netgiro' ) {
-			$show_action = true;
-		} elseif ( isset( $_REQUEST['post'] ) && is_admin() ) {
-			// Verify nonce for post edit screen
-			if ( isset( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'update-post_' . absint( $_REQUEST['post'] ) ) ) {
-				$order_id = absint( wp_unslash( $_REQUEST['post'] ) );
-				if ( $order_id > 0 ) {
-					$order = wc_get_order( $order_id );
-					if ( $order && $order->get_payment_method() === 'netgiro' ) {
-						$show_action = true;
-					}
-				}
-			}
-		} elseif ( isset( $_REQUEST['order_id'] ) && is_admin() ) {
-			// Verify nonce for AJAX actions
-			if ( isset( $_REQUEST['security'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['security'] ), 'woocommerce-order-actions' ) ) {
-				$order_id = absint( wp_unslash( $_REQUEST['order_id'] ) );
-				if ( $order_id > 0 ) {
-					$order = wc_get_order( $order_id );
-					if ( $order && $order->get_payment_method() === 'netgiro' ) {
-						$show_action = true;
-					}
-				}
+		// Try global first, then get from request (HPOS uses 'id', legacy uses 'post').
+		$order = $theorder;
+		if ( ! $order instanceof WC_Order ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification handled by WooCommerce when action is submitted.
+			$order_id = absint( $_REQUEST['id'] ?? $_REQUEST['post'] ?? 0 );
+			if ( $order_id > 0 ) {
+				$order = wc_get_order( $order_id );
 			}
 		}
 
-		if ( $show_action ) {
+		if ( $order instanceof WC_Order && 'netgiro' === $order->get_payment_method() ) {
 			$actions['netgiro_check_status'] = __( 'Check Netgíró status', 'netgiro-payment-gateway-for-woocommerce' );
 		}
 

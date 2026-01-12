@@ -2,14 +2,14 @@
 Contributors: netgiro, smartmediais
 Tags: netgíró, netgiro, split payments, woocommerce
 Donate link: -
-Stable tag: 5.1.0
+Stable tag: 5.1.1
 Requires at least: 5.8
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-WC requires at least: 8.1.0
-WC tested up to: 10.3.3
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+WC requires at least: 8.5.0
+WC tested up to: 10.4.3
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Offer your customers Netgíró’s quick, secure, and streamlined payment solution directly in your WooCommerce store.
 
@@ -54,6 +54,11 @@ Register at: [https://partner.netgiro.is/Account/Register](https://partner.netgi
 Integrates securely with Netgíró's payment gateway ([Privacy Policy](https://www.netgiro.is/en/privacy-policy/)).
 
 == Changelog ==
+= 5.1.1 =
+* Fixed HPOS (High-Performance Order Storage) compatibility
+    * Replaced get_post_meta/update_post_meta with WC_Order meta methods
+    * Ensures proper order meta storage when HPOS is enabled
+
 = 5.1 =
 * Payment Confirmation Enhancements
     * Update default ConfirmationType from 0 to 1 in settings
