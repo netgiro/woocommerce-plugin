@@ -6,7 +6,7 @@
  * Generates a payment form that auto-submits customers to Netgíró checkout.
  *
  * @package Netgiro\Payments
- * @version 5.1.0
+ * @version 5.1.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -135,7 +135,7 @@ class Netgiro_Payment_Form {
 			'TotalAmount'          => $total_amount,
 			'Signature'            => $signature,
 			'PrefixUrlParameters'  => 'true',
-			'ClientInfo'           => 'WooCommerce 5.0.0',
+			'ClientInfo'           => 'WooCommerce ' . NETGIRO_PLUGIN_VERSION,
 		);
 
 		// Add PaymentConfirmedURL for server callback validation (ConfirmationType = 1)

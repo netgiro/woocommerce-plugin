@@ -1,17 +1,17 @@
-# Copyright (C) 2025 Netgíró
-# This file is distributed under the GPL v2 or later.
+# Copyright (C) 2026 Netgíró
+# This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Netgíró Payment Gateway for WooCommerce 5.0.0\n"
+"Project-Id-Version: Netgíró Payment Gateway for WooCommerce 5.1.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/netgiro-payment-gateway-for-woocommerce\n"
-"Last-Translator: Smartmedia <smartmedia@smartmedia.is>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-08T10:12:54+00:00\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
-"X-Domain: netgiro-payment-gateway-for-woocommerce\n"
+"X-Generator: WP-CLI 2.12.0\n"
 
 #. Plugin Name of the plugin
 #: index.php
@@ -32,64 +32,68 @@ msgstr ""
 #. Author of the plugin
 #: index.php
 #: includes/class-netgiro-block-support.php:95
-#: includes/class-netgiro-gateway.php:68
+#: includes/class-netgiro-gateway.php:71
 #: includes/class-netgiro-settings.php:40
+#: assets/js/netgiro-checkout.js:17
 msgid "Netgíró"
 msgstr ""
 
-#: includes/class-netgiro-actions.php:69
+#: includes/class-netgiro-actions.php:51
 msgid "Check Netgíró status"
 msgstr ""
 
-#: includes/class-netgiro-actions.php:87
+#: includes/class-netgiro-actions.php:69
 msgid "No Netgíró transaction ID found for this order."
 msgstr ""
 
-#: includes/class-netgiro-actions.php:91
+#: includes/class-netgiro-actions.php:73
 msgid "Order was not paid using Netgíró. Status check aborted."
 msgstr ""
 
-#: includes/class-netgiro-actions.php:98
+#: includes/class-netgiro-actions.php:80
 msgid "Netgíró gateway instance not found or not active."
 msgstr ""
 
-#: includes/class-netgiro-actions.php:111
+#: includes/class-netgiro-actions.php:93
 msgid "Netgíró API credentials (Secret Key or Application ID) are not configured in WooCommerce settings."
 msgstr ""
 
-#: includes/class-netgiro-actions.php:116
+#: includes/class-netgiro-actions.php:98
 msgid "Netgíró API class not found. Plugin files may be missing or corrupted."
 msgstr ""
 
 #. translators: %1$s: Error message from API, %2$s: Netgiro Transaction ID.
-#: includes/class-netgiro-actions.php:130
+#: includes/class-netgiro-actions.php:112
+#, php-format
 msgid "Netgíró status check failed: %1$s (Transaction ID: %2$s)"
 msgstr ""
 
-#: includes/class-netgiro-actions.php:138
+#: includes/class-netgiro-actions.php:120
 msgid "Status not provided"
 msgstr ""
 
-#: includes/class-netgiro-actions.php:140
+#: includes/class-netgiro-actions.php:122
 msgid "Refundable"
 msgstr ""
 
-#: includes/class-netgiro-actions.php:140
+#: includes/class-netgiro-actions.php:122
 msgid "Not Refundable"
 msgstr ""
 
 #. Translators: %s is the formatted settlement date.
-#: includes/class-netgiro-actions.php:142
+#: includes/class-netgiro-actions.php:124
+#, php-format
 msgid "Settlement expected on: %s"
 msgstr ""
 
 #. Translators: %s is the formatted settlement date.
-#: includes/class-netgiro-actions.php:142
+#: includes/class-netgiro-actions.php:124
 msgid "Settlement date not available"
 msgstr ""
 
 #. translators: %1$s: Netgiro Transaction ID, %2$s: Transaction status, %3$s: Refundable status, %4$s: Expected settlement date.
-#: includes/class-netgiro-actions.php:146
+#: includes/class-netgiro-actions.php:128
+#, php-format
 msgid "Netgíró status updated: Transaction ID: %1$s. Status: %2$s. Refundable: %3$s. %4$s"
 msgstr ""
 
@@ -98,68 +102,104 @@ msgid "Invalid response format from API server."
 msgstr ""
 
 #: includes/class-netgiro-block-support.php:104
+#: assets/js/netgiro-checkout.js:18
 msgid "Pay with Netgíró."
 msgstr ""
 
-#: includes/class-netgiro-gateway.php:69
+#: includes/class-netgiro-gateway.php:72
 msgid "Accept payments via Netgíró."
 msgstr ""
 
-#: includes/class-netgiro-gateway.php:179
+#: includes/class-netgiro-gateway.php:206
+msgid "Netgíró callback failed: Signature mismatch."
+msgstr ""
+
+#. translators: %1$s: expected order amount, %2$s: received callback amount.
+#: includes/class-netgiro-gateway.php:225
+#, php-format
+msgid "Netgíró callback failed: Amount mismatch. Expected %1$s, received %2$s."
+msgstr ""
+
+#. Translators: %1$s is the transaction ID
+#: includes/class-netgiro-gateway.php:264
+#: includes/class-netgiro-gateway.php:424
+#, php-format
+msgid "Netgíró payment cancelled by customer. Transaction ID: %1$s"
+msgstr ""
+
+#. Translators: %1$s is the transaction ID, %2$s is amount
+#: includes/class-netgiro-gateway.php:325
+#, php-format
+msgid "Netgíró payment confirmed via server callback. Transaction ID: %1$s, Amount: %2$s"
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:391
 msgid "Netgíró signature mismatch."
 msgstr ""
 
+#. Translators: %1$s is the transaction ID
+#: includes/class-netgiro-gateway.php:467
+#, php-format
+msgid "Payment authorized. Waiting for Netgíró server callback confirmation. Transaction ID: %1$s"
+msgstr ""
+
 #. Translators: %1$s is the transaction ID, %2$s is additional transaction information.
-#: includes/class-netgiro-gateway.php:207
+#: includes/class-netgiro-gateway.php:492
+#, php-format
 msgid "Netgíró payment authorized. Please confirm this order by setting its status to Processing or Complete. Transaction ID: %1$s, %2$s"
 msgstr ""
 
 #. Translators: %1$s is the transaction ID, %2$s is amount
-#: includes/class-netgiro-gateway.php:220
+#: includes/class-netgiro-gateway.php:506
+#, php-format
 msgid "Netgíró payment authorized and has been confirmed. Transaction ID: %1$s, Amount: %2$s"
 msgstr ""
 
-#: includes/class-netgiro-gateway.php:282
+#: includes/class-netgiro-gateway.php:569
 msgid "Could not attempt Netgíró confirmation: No transaction ID found."
 msgstr ""
 
-#: includes/class-netgiro-gateway.php:293
+#: includes/class-netgiro-gateway.php:580
 msgid "Netgíró payment confirmed successfully."
 msgstr ""
 
-#: includes/class-netgiro-gateway.php:300
+#: includes/class-netgiro-gateway.php:588
 msgid "Unknown error"
 msgstr ""
 
 #. Translators: %s error reason
-#: includes/class-netgiro-gateway.php:302
+#: includes/class-netgiro-gateway.php:590
+#, php-format
 msgid "Netgíró manual confirmation failed. Reason: %s"
 msgstr ""
 
-#: includes/class-netgiro-gateway.php:324
+#: includes/class-netgiro-gateway.php:612
 msgid "Order not found."
 msgstr ""
 
-#: includes/class-netgiro-gateway.php:329
+#: includes/class-netgiro-gateway.php:617
 msgid "Cannot refund: Missing Netgíró transaction ID."
 msgstr ""
 
 #. Translators: %s is the current payment state from Netgíró.
-#: includes/class-netgiro-gateway.php:338
+#: includes/class-netgiro-gateway.php:626
+#, php-format
 msgid "Cannot refund: Payment is not in an authorized or confirmed state (Current state: %s)."
 msgstr ""
 
 #. Translators: %1$s is the refunded amount.
-#: includes/class-netgiro-gateway.php:349
+#: includes/class-netgiro-gateway.php:637
+#, php-format
 msgid "Netgíró refund successful. Amount: %1$s"
 msgstr ""
 
-#: includes/class-netgiro-gateway.php:359
+#: includes/class-netgiro-gateway.php:648
 msgid "Unknown error during refund."
 msgstr ""
 
 #. Translators: %s is the refunded failure reason.
-#: includes/class-netgiro-gateway.php:362
+#: includes/class-netgiro-gateway.php:651
+#, php-format
 msgid "Netgíró refund failed. Reason: %s"
 msgstr ""
 
@@ -168,15 +208,16 @@ msgid "Invalid order."
 msgstr ""
 
 #. translators: %1$s is the order ID, %2$s is the shop name.
-#: includes/class-netgiro-payment-form.php:157
+#: includes/class-netgiro-payment-form.php:163
+#, php-format
 msgid "Order #%1$s from %2$s"
 msgstr ""
 
-#: includes/class-netgiro-payment-form.php:187
+#: includes/class-netgiro-payment-form.php:193
 msgid "Please click the button below to proceed to Netgíró."
 msgstr ""
 
-#: includes/class-netgiro-payment-form.php:188
+#: includes/class-netgiro-payment-form.php:194
 msgid "Proceed to Netgíró"
 msgstr ""
 
@@ -253,7 +294,7 @@ msgid "Payment Confirmation Type"
 msgstr ""
 
 #: includes/class-netgiro-settings.php:84
-msgid "Choose how payments are confirmed after authorization. Automatic confirms immediately. Manual requires changing order status from On Hold to Processing/Completed."
+msgid "Choose how payments are confirmed after authorization. Server Callback (recommended): Netgíró validates with your server before confirming. Automatic: Confirms immediately. Manual: Requires changing order status from On Hold to Processing/Completed."
 msgstr ""
 
 #: includes/class-netgiro-settings.php:87
@@ -261,38 +302,42 @@ msgid "Automatic Confirmation (Capture immediately)"
 msgstr ""
 
 #: includes/class-netgiro-settings.php:88
+msgid "Server Callback (Recommended - Server-side validation)"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:89
 msgid "Manual Confirmation (Authorize now, Capture later)"
 msgstr ""
 
-#: includes/class-netgiro-settings.php:93
+#: includes/class-netgiro-settings.php:94
 msgid "Send Order Item Details"
 msgstr ""
 
-#: includes/class-netgiro-settings.php:95
+#: includes/class-netgiro-settings.php:96
 msgid "Send individual item details (product name, price, quantity) to Netgíró."
 msgstr ""
 
-#: includes/class-netgiro-settings.php:96
+#: includes/class-netgiro-settings.php:97
 msgid "Recommended. If unchecked, only the order total and a generic description will be sent."
 msgstr ""
 
-#: includes/class-netgiro-settings.php:101
+#: includes/class-netgiro-settings.php:102
 msgid "Page Redirects"
 msgstr ""
 
-#: includes/class-netgiro-settings.php:105
+#: includes/class-netgiro-settings.php:106
 msgid "Cancel Page"
 msgstr ""
 
-#: includes/class-netgiro-settings.php:107
+#: includes/class-netgiro-settings.php:108
 msgid "Default (Checkout Page)"
 msgstr ""
 
-#: includes/class-netgiro-settings.php:108
+#: includes/class-netgiro-settings.php:109
 msgid "Page where customers are redirected if they cancel the payment at Netgíró. If unset, defaults to the checkout page."
 msgstr ""
 
-#: includes/class-netgiro-settings.php:125
+#: includes/class-netgiro-settings.php:126
 msgid "Select a page"
 msgstr ""
 

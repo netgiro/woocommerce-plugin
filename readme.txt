@@ -2,7 +2,7 @@
 Contributors: netgiro, smartmediais
 Tags: netgíró, netgiro, split payments, woocommerce
 Donate link: -
-Stable tag: 5.1.1
+Stable tag: 5.1.2
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -54,6 +54,12 @@ Register at: [https://partner.netgiro.is/Account/Register](https://partner.netgi
 Integrates securely with Netgíró's payment gateway ([Privacy Policy](https://www.netgiro.is/en/privacy-policy/)).
 
 == Changelog ==
+= 5.1.2 =
+* Release integrity fix
+    * Ships the callback timeout handling and HPOS order-action fixes already present in the canonical GitHub source
+    * Aligns plugin metadata and the bundled license on GPLv3 or later
+    * Builds WordPress.org packages from an explicit production-file allowlist
+
 = 5.1.1 =
 * Fixed HPOS (High-Performance Order Storage) compatibility
     * Replaced get_post_meta/update_post_meta with WC_Order meta methods

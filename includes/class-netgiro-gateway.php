@@ -4,7 +4,7 @@
  * Netgíró WooCommerce Payment Gateway
  *
  * @package Netgiro\Payments
- * @version 5.1.1
+ * @version 5.1.2
  */
 
 defined( 'ABSPATH' ) || exit;

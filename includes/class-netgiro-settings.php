@@ -7,7 +7,7 @@
  * displayed in the WooCommerce settings area.
  *
  * @package Netgiro\Payments
- * @version 5.1.0
+ * @version 5.1.2
  */
 
 defined( 'ABSPATH' ) || exit;

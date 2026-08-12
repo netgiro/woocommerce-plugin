@@ -7,7 +7,7 @@
  * Registers the payment method type and provides necessary data to the frontend script.
  *
  * @package Netgiro\Payments
- * @version 5.1.0
+ * @version 5.1.2
  */
 
 defined( 'ABSPATH' ) || exit;

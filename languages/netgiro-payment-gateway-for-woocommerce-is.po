@@ -1,15 +1,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/netgiro-payment-"
+"gateway-for-woocommerce\n"
+"POT-Creation-Date: 2026-08-12T11:52:01+00:00\n"
+"PO-Revision-Date: 2025-04-08T10:11:56+00:00\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-08T10:11:56+00:00\n"
-"PO-Revision-Date: 2025-04-08T10:11:56+00:00\n"
-"Language: is\n"
 
 #. Plugin Name of the plugin
 #: index.php
@@ -28,136 +29,201 @@ msgid "Official Netgíró Payment Gateway integration for WooCommerce."
 msgstr "Opinber Netgíró greiðslugátt samþætting fyrir WooCommerce."
 
 #. Author of the plugin
-#: index.php
-#: includes/class-netgiro-block-support.php:95
-#: includes/class-netgiro-gateway.php:68
-#: includes/class-netgiro-settings.php:40
+#: index.php includes/class-netgiro-block-support.php:95
+#: includes/class-netgiro-gateway.php:71 includes/class-netgiro-settings.php:40
+#: assets/js/netgiro-checkout.js:17
 msgid "Netgíró"
 msgstr "Netgíró"
 
-#: includes/class-netgiro-actions.php:69
+#: includes/class-netgiro-actions.php:51
 msgid "Check Netgíró status"
 msgstr "Athuga stöðu Netgíró"
 
-#: includes/class-netgiro-actions.php:87
+#: includes/class-netgiro-actions.php:69
 msgid "No Netgíró transaction ID found for this order."
 msgstr "Ekkert færslunúmer frá Netgíró fannst fyrir þessa pöntun."
 
-#: includes/class-netgiro-actions.php:91
+#: includes/class-netgiro-actions.php:73
 msgid "Order was not paid using Netgíró. Status check aborted."
 msgstr "Pöntunin var ekki greidd með Netgíró. Hætt við stöðuathugun."
 
-#: includes/class-netgiro-actions.php:98
+#: includes/class-netgiro-actions.php:80
 msgid "Netgíró gateway instance not found or not active."
 msgstr "Tilvik Netgíró greiðslugáttar fannst ekki eða er ekki virkt."
 
-#: includes/class-netgiro-actions.php:111
-msgid "Netgíró API credentials (Secret Key or Application ID) are not configured in WooCommerce settings."
-msgstr "API aðgangsupplýsingar fyrir Netgíró (Leynilykill eða Auðkennisnúmer forrits) eru ekki stilltar í WooCommerce stillingum."
+#: includes/class-netgiro-actions.php:93
+msgid ""
+"Netgíró API credentials (Secret Key or Application ID) are not configured in "
+"WooCommerce settings."
+msgstr ""
+"API aðgangsupplýsingar fyrir Netgíró (Leynilykill eða Auðkennisnúmer "
+"forrits) eru ekki stilltar í WooCommerce stillingum."
 
-#: includes/class-netgiro-actions.php:116
+#: includes/class-netgiro-actions.php:98
 msgid "Netgíró API class not found. Plugin files may be missing or corrupted."
-msgstr "Netgíró API klasinn fannst ekki. Hugsanlegt er að skrár viðbótarinnar vanti eða séu skemmdar."
+msgstr ""
+"Netgíró API klasinn fannst ekki. Hugsanlegt er að skrár viðbótarinnar vanti "
+"eða séu skemmdar."
 
 #. translators: %1$s: Error message from API, %2$s: Netgiro Transaction ID.
-#: includes/class-netgiro-actions.php:130
+#: includes/class-netgiro-actions.php:112
+#, php-format
 msgid "Netgíró status check failed: %1$s (Transaction ID: %2$s)"
 msgstr "Athugun á stöðu Netgíró mistókst: %1$s (Færslunúmer: %2$s)"
 
-#: includes/class-netgiro-actions.php:138
+#: includes/class-netgiro-actions.php:120
 msgid "Status not provided"
 msgstr "Staða ekki gefin upp"
 
-#: includes/class-netgiro-actions.php:140
+#: includes/class-netgiro-actions.php:122
 msgid "Refundable"
 msgstr "Endurgreiðanlegt"
 
-#: includes/class-netgiro-actions.php:140
+#: includes/class-netgiro-actions.php:122
 msgid "Not Refundable"
 msgstr "Ekki endurgreiðanlegt"
 
 #. Translators: %s is the formatted settlement date.
-#: includes/class-netgiro-actions.php:142
+#: includes/class-netgiro-actions.php:124
+#, php-format
 msgid "Settlement expected on: %s"
 msgstr "Gert er ráð fyrir uppgjöri þann: %s"
 
 #. Translators: %s is the formatted settlement date.
-#: includes/class-netgiro-actions.php:142
+#: includes/class-netgiro-actions.php:124
 msgid "Settlement date not available"
 msgstr "Uppgjörsdagsetning ekki tiltæk"
 
 #. translators: %1$s: Netgiro Transaction ID, %2$s: Transaction status, %3$s: Refundable status, %4$s: Expected settlement date.
-#: includes/class-netgiro-actions.php:146
-msgid "Netgíró status updated: Transaction ID: %1$s. Status: %2$s. Refundable: %3$s. %4$s"
-msgstr "Staða Netgíró uppfærð: Færslunúmer: %1$s. Staða: %2$s. Endurgreiðanlegt: %3$s. %4$s"
+#: includes/class-netgiro-actions.php:128
+#, php-format
+msgid ""
+"Netgíró status updated: Transaction ID: %1$s. Status: %2$s. Refundable: "
+"%3$s. %4$s"
+msgstr ""
+"Staða Netgíró uppfærð: Færslunúmer: %1$s. Staða: %2$s. Endurgreiðanlegt: "
+"%3$s. %4$s"
 
 #: includes/class-netgiro-api.php:345
 msgid "Invalid response format from API server."
 msgstr "Ógilt snið svars frá API þjóni."
 
 #: includes/class-netgiro-block-support.php:104
+#: assets/js/netgiro-checkout.js:18
 msgid "Pay with Netgíró."
 msgstr "Borga með Netgíró."
 
-#: includes/class-netgiro-gateway.php:69
+#: includes/class-netgiro-gateway.php:72
 msgid "Accept payments via Netgíró."
 msgstr "Samþykkja greiðslur í gegnum Netgíró."
 
-#: includes/class-netgiro-gateway.php:179
+#: includes/class-netgiro-gateway.php:206
+msgid "Netgíró callback failed: Signature mismatch."
+msgstr ""
+
+#. translators: %1$s: expected order amount, %2$s: received callback amount.
+#: includes/class-netgiro-gateway.php:225
+#, php-format
+msgid "Netgíró callback failed: Amount mismatch. Expected %1$s, received %2$s."
+msgstr ""
+
+#. Translators: %1$s is the transaction ID
+#: includes/class-netgiro-gateway.php:264
+#: includes/class-netgiro-gateway.php:424
+#, php-format
+msgid "Netgíró payment cancelled by customer. Transaction ID: %1$s"
+msgstr ""
+
+#. Translators: %1$s is the transaction ID, %2$s is amount
+#: includes/class-netgiro-gateway.php:325
+#, php-format
+msgid ""
+"Netgíró payment confirmed via server callback. Transaction ID: %1$s, Amount: "
+"%2$s"
+msgstr ""
+
+#: includes/class-netgiro-gateway.php:391
 msgid "Netgíró signature mismatch."
 msgstr "Undirskrift Netgíró passar ekki."
 
+#. Translators: %1$s is the transaction ID
+#: includes/class-netgiro-gateway.php:467
+#, php-format
+msgid ""
+"Payment authorized. Waiting for Netgíró server callback confirmation. "
+"Transaction ID: %1$s"
+msgstr ""
+
 #. Translators: %1$s is the transaction ID, %2$s is additional transaction information.
-#: includes/class-netgiro-gateway.php:207
-msgid "Netgíró payment authorized. Please confirm this order by setting its status to Processing or Complete. Transaction ID: %1$s, %2$s"
-msgstr "Netgíró greiðsla samþykkt. Vinsamlegast staðfestu þessa pöntun með því að breyta stöðu hennar í „Í vinnslu“ eða „Lokið“. Færslunúmer: %1$s, %2$s"
+#: includes/class-netgiro-gateway.php:492
+#, php-format
+msgid ""
+"Netgíró payment authorized. Please confirm this order by setting its status "
+"to Processing or Complete. Transaction ID: %1$s, %2$s"
+msgstr ""
+"Netgíró greiðsla samþykkt. Vinsamlegast staðfestu þessa pöntun með því að "
+"breyta stöðu hennar í „Í vinnslu“ eða „Lokið“. Færslunúmer: %1$s, %2$s"
 
 #. Translators: %1$s is the transaction ID, %2$s is amount
-#: includes/class-netgiro-gateway.php:220
-msgid "Netgíró payment authorized and has been confirmed. Transaction ID: %1$s, Amount: %2$s"
-msgstr "Netgíró greiðsla samþykkt og hefur verið staðfest. Færslunúmer: %1$s, Upphæð: %2$s"
+#: includes/class-netgiro-gateway.php:506
+#, php-format
+msgid ""
+"Netgíró payment authorized and has been confirmed. Transaction ID: %1$s, "
+"Amount: %2$s"
+msgstr ""
+"Netgíró greiðsla samþykkt og hefur verið staðfest. Færslunúmer: %1$s, "
+"Upphæð: %2$s"
 
-#: includes/class-netgiro-gateway.php:282
+#: includes/class-netgiro-gateway.php:569
 msgid "Could not attempt Netgíró confirmation: No transaction ID found."
-msgstr "Gekk ekki að reyna að staðfesta Netgíró greiðslu: Ekkert færslunúmer fannst."
+msgstr ""
+"Gekk ekki að reyna að staðfesta Netgíró greiðslu: Ekkert færslunúmer fannst."
 
-#: includes/class-netgiro-gateway.php:293
+#: includes/class-netgiro-gateway.php:580
 msgid "Netgíró payment confirmed successfully."
 msgstr "Netgíró greiðsla staðfest."
 
-#: includes/class-netgiro-gateway.php:300
+#: includes/class-netgiro-gateway.php:588
 msgid "Unknown error"
 msgstr "Óþekkt villa"
 
 #. Translators: %s error reason
-#: includes/class-netgiro-gateway.php:302
+#: includes/class-netgiro-gateway.php:590
+#, php-format
 msgid "Netgíró manual confirmation failed. Reason: %s"
 msgstr "Handvirk staðfesting Netgíró mistókst. Ástæða: %s"
 
-#: includes/class-netgiro-gateway.php:324
+#: includes/class-netgiro-gateway.php:612
 msgid "Order not found."
 msgstr "Pöntun fannst ekki."
 
-#: includes/class-netgiro-gateway.php:329
+#: includes/class-netgiro-gateway.php:617
 msgid "Cannot refund: Missing Netgíró transaction ID."
 msgstr "Ekki hægt að endurgreiða: Vantar færslunúmer frá Netgíró."
 
 #. Translators: %s is the current payment state from Netgíró.
-#: includes/class-netgiro-gateway.php:338
-msgid "Cannot refund: Payment is not in an authorized or confirmed state (Current state: %s)."
-msgstr "Ekki hægt að endurgreiða: Greiðsla er ekki í samþykktu eða staðfestu ástandi (Núverandi ástand: %s)."
+#: includes/class-netgiro-gateway.php:626
+#, php-format
+msgid ""
+"Cannot refund: Payment is not in an authorized or confirmed state (Current "
+"state: %s)."
+msgstr ""
+"Ekki hægt að endurgreiða: Greiðsla er ekki í samþykktu eða staðfestu ástandi "
+"(Núverandi ástand: %s)."
 
 #. Translators: %1$s is the refunded amount.
-#: includes/class-netgiro-gateway.php:349
+#: includes/class-netgiro-gateway.php:637
+#, php-format
 msgid "Netgíró refund successful. Amount: %1$s"
 msgstr "Endurgreiðsla í gegnum Netgíró tókst. Upphæð: %1$s"
 
-#: includes/class-netgiro-gateway.php:359
+#: includes/class-netgiro-gateway.php:648
 msgid "Unknown error during refund."
 msgstr "Óþekkt villa við endurgreiðslu."
 
 #. Translators: %s is the refunded failure reason.
-#: includes/class-netgiro-gateway.php:362
+#: includes/class-netgiro-gateway.php:651
+#, php-format
 msgid "Netgíró refund failed. Reason: %s"
 msgstr "Endurgreiðsla í gegnum Netgíró mistókst. Ástæða: %s"
 
@@ -166,15 +232,17 @@ msgid "Invalid order."
 msgstr "Ógild pöntun."
 
 #. translators: %1$s is the order ID, %2$s is the shop name.
-#: includes/class-netgiro-payment-form.php:157
+#: includes/class-netgiro-payment-form.php:163
+#, php-format
 msgid "Order #%1$s from %2$s"
 msgstr "Pöntun #%1$s frá %2$s"
 
-#: includes/class-netgiro-payment-form.php:187
+#: includes/class-netgiro-payment-form.php:193
 msgid "Please click the button below to proceed to Netgíró."
-msgstr "Vinsamlegast smelltu á hnappinn hér að neðan til að halda áfram í Netgíró."
+msgstr ""
+"Vinsamlegast smelltu á hnappinn hér að neðan til að halda áfram í Netgíró."
 
-#: includes/class-netgiro-payment-form.php:188
+#: includes/class-netgiro-payment-form.php:194
 msgid "Proceed to Netgíró"
 msgstr "Halda áfram í Netgíró"
 
@@ -203,8 +271,12 @@ msgid "This controls the description which the user sees during checkout."
 msgstr "Þetta stýrir lýsingunni sem notandinn sér við afgreiðslu."
 
 #: includes/class-netgiro-settings.php:47
-msgid "Pay securely using Netgíró. Choose instant payment, split payments, or invoice."
-msgstr "Borgaðu á öruggan hátt með Netgíró. Veldu straumgreiðslu, skiptar greiðslur eða reikning."
+msgid ""
+"Pay securely using Netgíró. Choose instant payment, split payments, or "
+"invoice."
+msgstr ""
+"Borgaðu á öruggan hátt með Netgíró. Veldu straumgreiðslu, skiptar greiðslur "
+"eða reikning."
 
 #: includes/class-netgiro-settings.php:51
 msgid "API Credentials"
@@ -212,7 +284,9 @@ msgstr "API aðgangsupplýsingar"
 
 #: includes/class-netgiro-settings.php:53
 msgid "Enter your Netgíró API details obtained from partner.netgiro.is."
-msgstr "Sláðu inn API upplýsingar þínar fyrir Netgíró sem þú fékkst frá partner.netgiro.is."
+msgstr ""
+"Sláðu inn API upplýsingar þínar fyrir Netgíró sem þú fékkst frá partner."
+"netgiro.is."
 
 #: includes/class-netgiro-settings.php:56
 msgid "Test Mode"
@@ -223,8 +297,12 @@ msgid "Enable Netgíró Test Environment"
 msgstr "Virkja prófunarumhverfi Netgíró"
 
 #: includes/class-netgiro-settings.php:59
-msgid "Use the Netgíró sandbox environment for testing. Requires separate test credentials."
-msgstr "Notaðu sandkassarumhverfi Netgíró til að prófa. Krefst sérstakra prófunar aðgangsupplýsinga."
+msgid ""
+"Use the Netgíró sandbox environment for testing. Requires separate test "
+"credentials."
+msgstr ""
+"Notaðu sandkassarumhverfi Netgíró til að prófa. Krefst sérstakra prófunar "
+"aðgangsupplýsinga."
 
 #: includes/class-netgiro-settings.php:64
 msgid "Application ID"
@@ -251,53 +329,86 @@ msgid "Payment Confirmation Type"
 msgstr "Tegund greiðslustaðfestingar"
 
 #: includes/class-netgiro-settings.php:84
-msgid "Choose how payments are confirmed after authorization. Automatic confirms immediately. Manual requires changing order status from On Hold to Processing/Completed."
-msgstr "Veldu hvernig greiðslur eru staðfestar eftir heimild. Sjálfvirk staðfestir strax. Handvirk krefst þess að pöntunarstaða sé breytt úr „Í bið“ í „Í vinnslu“/„Lokið“."
+msgid ""
+"Choose how payments are confirmed after authorization. Server Callback "
+"(recommended): Netgíró validates with your server before confirming. "
+"Automatic: Confirms immediately. Manual: Requires changing order status from "
+"On Hold to Processing/Completed."
+msgstr ""
 
 #: includes/class-netgiro-settings.php:87
 msgid "Automatic Confirmation (Capture immediately)"
 msgstr "Sjálfvirk staðfesting (Tekur strax)"
 
 #: includes/class-netgiro-settings.php:88
+msgid "Server Callback (Recommended - Server-side validation)"
+msgstr ""
+
+#: includes/class-netgiro-settings.php:89
 msgid "Manual Confirmation (Authorize now, Capture later)"
 msgstr "Handvirk staðfesting (Heimilda núna, tekur seinna)"
 
-#: includes/class-netgiro-settings.php:93
+#: includes/class-netgiro-settings.php:94
 msgid "Send Order Item Details"
 msgstr "Senda upplýsingar um vöruliði pöntunar"
 
-#: includes/class-netgiro-settings.php:95
-msgid "Send individual item details (product name, price, quantity) to Netgíró."
-msgstr "Senda upplýsingar um einstaka vörur (vöruheiti, verð, magn) til Netgíró."
-
 #: includes/class-netgiro-settings.php:96
-msgid "Recommended. If unchecked, only the order total and a generic description will be sent."
-msgstr "Mælt með. Ef ekki hakað við, verður aðeins heildarupphæð pöntunar og almenn lýsing send."
+msgid ""
+"Send individual item details (product name, price, quantity) to Netgíró."
+msgstr ""
+"Senda upplýsingar um einstaka vörur (vöruheiti, verð, magn) til Netgíró."
 
-#: includes/class-netgiro-settings.php:101
+#: includes/class-netgiro-settings.php:97
+msgid ""
+"Recommended. If unchecked, only the order total and a generic description "
+"will be sent."
+msgstr ""
+"Mælt með. Ef ekki hakað við, verður aðeins heildarupphæð pöntunar og almenn "
+"lýsing send."
+
+#: includes/class-netgiro-settings.php:102
 msgid "Page Redirects"
 msgstr "Síðutilvísanir"
 
-#: includes/class-netgiro-settings.php:105
+#: includes/class-netgiro-settings.php:106
 msgid "Cancel Page"
 msgstr "Afbókunarsíða"
 
-#: includes/class-netgiro-settings.php:107
+#: includes/class-netgiro-settings.php:108
 msgid "Default (Checkout Page)"
 msgstr "Sjálfgefið (Afgreiðslusíða)"
 
-#: includes/class-netgiro-settings.php:108
-msgid "Page where customers are redirected if they cancel the payment at Netgíró. If unset, defaults to the checkout page."
-msgstr "Síða þangað sem viðskiptavinum er vísað ef þeir hætta við greiðsluna hjá Netgíró. Ef ekki er stillt, er sjálfgefið afgreiðslusíðan."
+#: includes/class-netgiro-settings.php:109
+msgid ""
+"Page where customers are redirected if they cancel the payment at Netgíró. "
+"If unset, defaults to the checkout page."
+msgstr ""
+"Síða þangað sem viðskiptavinum er vísað ef þeir hætta við greiðsluna hjá "
+"Netgíró. Ef ekki er stillt, er sjálfgefið afgreiðslusíðan."
 
-#: includes/class-netgiro-settings.php:125
+#: includes/class-netgiro-settings.php:126
 msgid "Select a page"
 msgstr "Veldu síðu"
 
 #: index.php:41
-msgid "Netgíró Payment Gateway for WooCommerce requires WooCommerce to be installed and active."
-msgstr "Netgíró greiðslugátt fyrir WooCommerce krefst þess að WooCommerce sé uppsett og virkt."
+msgid ""
+"Netgíró Payment Gateway for WooCommerce requires WooCommerce to be installed "
+"and active."
+msgstr ""
+"Netgíró greiðslugátt fyrir WooCommerce krefst þess að WooCommerce sé uppsett "
+"og virkt."
 
 #: index.php:56
 msgid "Netgíró Payment Gateway requires WooCommerce currency to be set to ISK."
-msgstr "Netgíró greiðslugátt krefst þess að gjaldmiðill WooCommerce sé stilltur á ISK."
+msgstr ""
+"Netgíró greiðslugátt krefst þess að gjaldmiðill WooCommerce sé stilltur á "
+"ISK."
+
+#~ msgid ""
+#~ "Choose how payments are confirmed after authorization. Automatic confirms "
+#~ "immediately. Manual requires changing order status from On Hold to "
+#~ "Processing/Completed."
+#~ msgstr ""
+#~ "Veldu hvernig greiðslur eru staðfestar eftir heimild. Sjálfvirk "
+#~ "staðfestir strax. Handvirk krefst þess að pöntunarstaða sé breytt úr „Í "
+#~ "bið“ í „Í vinnslu“/„Lokið“."
