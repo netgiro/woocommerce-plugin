@@ -15,5 +15,20 @@ docker run --rm \
 		--slug=netgiro-payment-gateway-for-woocommerce \
 		--ignore-domain
 
+python3 - "$WORK/netgiro-payment-gateway-for-woocommerce/languages/netgiro-payment-gateway-for-woocommerce.pot" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+text = re.sub(
+    r'"POT-Creation-Date: .*?\\n"',
+    '"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\\\\n"',
+    text,
+)
+path.write_text(text)
+PY
+
 cp "$WORK/netgiro-payment-gateway-for-woocommerce/languages/netgiro-payment-gateway-for-woocommerce.pot" \
 	"$ROOT/languages/netgiro-payment-gateway-for-woocommerce.pot"
