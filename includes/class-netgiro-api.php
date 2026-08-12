@@ -8,7 +8,7 @@
  * Refund success is determined by a 200 OK HTTP status.
  *
  * @package Netgiro\Payments
- * @version 5.1.0
+ * @version 5.1.2
  */
 
 defined( 'ABSPATH' ) || exit;
