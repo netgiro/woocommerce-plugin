@@ -4,7 +4,7 @@
  * Netgíró WooCommerce Payment Gateway
  *
  * @package Netgiro\Payments
- * @version 5.1.2
+ * @version 5.1.3
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -435,19 +435,28 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 			exit;
 		}
 
-		// For status=1 (unconfirmed), log warning but allow processing
-		// This can happen in edge cases and will be handled by confirmation type logic
-		if ( '1' === $status ) {
-			$logger->warning(
-				sprintf( 'Return: Order %d has unconfirmed status (status=1).', $order_id ),
+		$confirmation_type = $this->get_option( 'confirmation_type' );
+		$return_action     = $this->get_return_payment_action( $confirmation_type, $status );
+
+		if ( 'invalid' === $return_action ) {
+			$logger->error(
+				sprintf( 'Return: Order %d received unknown payment status: %s.', $order_id, $status ),
 				array( 'source' => 'netgiro-payment-gateway-for-woocommerce' )
 			);
+			$order->update_status(
+				'failed',
+				sprintf(
+					// Translators: %1$s is the unexpected Netgíró status.
+					__( 'Netgíró returned an unexpected payment status: %1$s', 'netgiro-payment-gateway-for-woocommerce' ),
+					$status
+				)
+			);
+			wp_safe_redirect( wc_get_checkout_url() );
+			exit;
 		}
 
-		$confirmation_type = $this->get_option( 'confirmation_type' );
-
 		// Handle Server Callback mode (ConfirmationType=1)
-		if ( '1' === $confirmation_type ) {
+		if ( 'callback' === $return_action ) {
 			$callback_validated = $order->get_meta( self::META_KEY_CALLBACK_VALIDATED, true );
 
 			if ( $callback_validated ) {
@@ -483,8 +492,32 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 			exit;
 		}
 
+		// Automatic confirmation must only complete a finally confirmed payment.
+		if ( 'pending' === $return_action ) {
+			$logger->warning(
+				sprintf( 'Return: Order %d received unconfirmed automatic payment status (status=1). Leaving order pending.', $order_id ),
+				array( 'source' => 'netgiro-payment-gateway-for-woocommerce' )
+			);
+
+			if ( ! in_array( $order->get_status(), array( 'processing', 'completed' ), true ) ) {
+				$order->update_status(
+					'pending',
+					sprintf(
+						// Translators: %1$s is the transaction ID.
+						__( 'Netgíró automatic confirmation returned an unconfirmed payment (status=1). Order remains pending until payment is verified. Transaction ID: %1$s', 'netgiro-payment-gateway-for-woocommerce' ),
+						$transaction_id
+					)
+				);
+			}
+
+			WC()->cart->empty_cart();
+			$redirect_url = $this->get_return_url( $order );
+			wp_safe_redirect( $redirect_url );
+			exit;
+		}
+
 		// Handle Manual Confirmation mode (ConfirmationType=2)
-		if ( '2' === $confirmation_type ) {
+		if ( 'manual' === $return_action ) {
 			$order->update_status(
 				'on-hold',
 				sprintf(
@@ -519,6 +552,37 @@ class Netgiro_Gateway extends WC_Payment_Gateway {
 		$logger->info( "Payment update successful. Redirecting user to: {$redirect_url}", array( 'source' => 'netgiro-payment-gateway-for-woocommerce' ) );
 		wp_safe_redirect( $redirect_url );
 		exit;
+	}
+
+	/**
+	 * Decide how a validated Netgíró return should affect the order.
+	 *
+	 * @param string $confirmation_type Configured confirmation mode.
+	 * @param string $status Netgíró payment status.
+	 * @return string One of callback, pending, manual, complete, or invalid.
+	 */
+	protected function get_return_payment_action( string $confirmation_type, string $status ): string {
+		if ( ! in_array( $status, array( '1', '2' ), true ) ) {
+			return 'invalid';
+		}
+
+		if ( ! in_array( $confirmation_type, array( '0', '1', '2' ), true ) ) {
+			return 'invalid';
+		}
+
+		if ( '1' === $confirmation_type ) {
+			return 'callback';
+		}
+
+		if ( '0' === $confirmation_type && '1' === $status ) {
+			return 'pending';
+		}
+
+		if ( '2' === $confirmation_type ) {
+			return 'manual';
+		}
+
+		return 'complete';
 	}
 
 	/**

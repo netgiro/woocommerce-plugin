@@ -2,12 +2,12 @@
 Contributors: netgiro, smartmediais
 Tags: netgíró, netgiro, split payments, woocommerce
 Donate link: -
-Stable tag: 5.1.2
+Stable tag: 5.1.3
 Requires at least: 5.8
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 WC requires at least: 8.5.0
-WC tested up to: 10.4.3
+WC tested up to: 11.0.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -54,6 +54,12 @@ Register at: [https://partner.netgiro.is/Account/Register](https://partner.netgi
 Integrates securely with Netgíró's payment gateway ([Privacy Policy](https://www.netgiro.is/en/privacy-policy/)).
 
 == Changelog ==
+= 5.1.3 =
+* Added verified compatibility with WooCommerce 11.0.1.
+* Aligned the missing confirmation setting fallback with the recommended Server Callback mode.
+* Prevented unconfirmed or unknown automatic return statuses from being marked paid.
+* Completed and rebuilt the Icelandic translation catalogue.
+
 = 5.1.2 =
 * Release integrity fix
     * Ships the callback timeout handling and HPOS order-action fixes already present in the canonical GitHub source
@@ -74,7 +80,7 @@ Integrates securely with Netgíró's payment gateway ([Privacy Policy](https://w
     * Type 0: Automatic (immediate confirmation)
     * Type 1: Server Callback (recommended - server validation)
     * Type 2: Manual (authorize now, capture later)
-    
+
 = 5.0 =
 * Refactored Plugin Structure
     * Removed Netgiro_Template base class.

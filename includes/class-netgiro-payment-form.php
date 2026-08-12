@@ -6,7 +6,7 @@
  * Generates a payment form that auto-submits customers to Netgíró checkout.
  *
  * @package Netgiro\Payments
- * @version 5.1.2
+ * @version 5.1.3
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -110,7 +110,7 @@ class Netgiro_Payment_Form {
 			return;
 		}
 
-		$confirmation_type = $this->gateway->get_option( 'confirmation_type', '0' );
+		$confirmation_type = $this->gateway->get_option( 'confirmation_type', '1' );
 		$send_items        = ( 'yes' === $this->gateway->get_option( 'send_order_items', 'yes' ) );
 		$application_id    = $this->gateway->application_id;
 		$secretkey         = $this->gateway->secretkey;
